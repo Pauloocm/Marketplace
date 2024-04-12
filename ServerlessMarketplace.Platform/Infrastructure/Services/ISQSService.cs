@@ -2,9 +2,8 @@
 
 namespace ServerlessMarketplace.Platform.Infrastructure.Services
 {
-    public interface ISQSService
+    public interface ISqsService
     {
-        public Task<SendMessageResponse> SendMessageResponse(SendMessageRequest request, CancellationToken cancellationToken = default);
         public Task<SendMessageResponse> SendProductCreatedMessage(string data, CancellationToken cancellationToken = default);
     }
 }

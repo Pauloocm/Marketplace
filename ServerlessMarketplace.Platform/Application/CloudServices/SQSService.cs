@@ -4,21 +4,16 @@ using ServerlessMarketplace.Platform.Infrastructure.Services;
 
 namespace ServerlessMarketplace.Platform.Application.CloudServices
 {
-    public class SQSService : ISQSService
+    public class SqsService : ISqsService
     {
+        private static string QueueUrl => "https://sqs.us-west-2.amazonaws.com/307671859681/ProductsSqs";
         private readonly AmazonSQSClient client;
 
-        public SQSService()
+        public SqsService()
         {
             client = new AmazonSQSClient();
         }
-
-        private readonly string QueueUrl = "https://sqs.us-west-2.amazonaws.com/307671859681/ProductsSqs";
-        public Task<SendMessageResponse> SendMessageResponse(SendMessageRequest request, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
+ 
         public async Task<SendMessageResponse> SendProductCreatedMessage(string data, CancellationToken cancellationToken = default)
         {
             var request = new SendMessageRequest($"{QueueUrl}", data);

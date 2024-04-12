@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IMarketplaceAppService, MarketplaceAppService>();
-builder.Services.AddTransient<ISQSService, SQSService>();
+builder.Services.AddTransient<ISqsService, SqsService>();
 
 var app = builder.Build();
 
