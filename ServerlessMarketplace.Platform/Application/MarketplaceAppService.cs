@@ -1,9 +1,9 @@
 ﻿using ServerlessMarketplace.Domain.Extensions;
-using ServerlessMarketplace.Platform.Application;
+using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Platform.Application.Products;
 using ServerlessMarketplace.Platform.Infrastructure.Services;
 
-namespace ServerlessMarketplace.Domain.Products
+namespace ServerlessMarketplace.Platform.Application
 {
     public class MarketplaceAppService(ISqsService sqs) : IMarketplaceAppService
     {
