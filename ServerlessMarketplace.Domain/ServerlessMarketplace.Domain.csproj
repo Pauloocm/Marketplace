@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ServerlessMarketplace.Platform\ServerlessMarketplace.Platform.csproj" />
-  </ItemGroup>
-
 </Project>
