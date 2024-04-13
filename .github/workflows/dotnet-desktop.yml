@@ -22,6 +22,6 @@ jobs:
     - name: Build
       run: dotnet build ./ServerlessMarketplace/ServerlessMarketplace.sln
     - name: Test
-      run: dotnet test ./ServerlessMarketplace/ServerlessMarketplace.Platform.Tests.csproj --no-build --verbosity normal
+      run: dotnet test ./ServerlessMarketplace.Platform/ServerlessMarketplace.Platform.Tests.csproj --no-build --verbosity normal
 
 
