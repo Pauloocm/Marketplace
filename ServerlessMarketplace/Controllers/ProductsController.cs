@@ -19,5 +19,15 @@ namespace ServerlessMarketplace.Controllers
 
             return Ok(productId);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Get([FromBody] GetProductFilter filter, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(filter);
+
+            var product = await marketplaceAppService.Get(filter, cancellationToken);
+
+            return Ok(product);
+        }
     }
 }
