@@ -3,22 +3,21 @@ using ServerlessMarketplace.Platform.Infrastructure.DataBase;
 
 namespace ServerlessMarketplace.Platform.Infrastructure.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository(DataContext context) : IProductRepository
     {
-        private readonly DataContext dataContext;
+        private readonly DataContext dataContext = context ?? throw new ArgumentNullException(nameof(context));
+
         public async Task Add(Product product, CancellationToken cancellationToken = default)
         {
-            if(product == null)
-            {
-                await Task.CompletedTask;
-            }
+            ArgumentNullException.ThrowIfNull(nameof(product));
+
             await dataContext.Products.AddAsync(product, cancellationToken);
             await dataContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<Product?> GetBy(Guid id, CancellationToken cancellationToken = default)
         {
-            if(id == Guid.Empty)
+            if (id == Guid.Empty)
             {
                 await Task.FromResult<Product>(null);
             }

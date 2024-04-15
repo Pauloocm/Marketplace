@@ -21,7 +21,7 @@ namespace ServerlessMarketplace.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromBody] GetProductFilter filter, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Get([FromRoute] GetProductFilter filter, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(filter);
 

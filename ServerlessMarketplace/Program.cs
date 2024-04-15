@@ -1,6 +1,7 @@
 using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Platform.Application;
 using ServerlessMarketplace.Platform.Application.CloudServices;
+using ServerlessMarketplace.Platform.Infrastructure.DataBase;
 using ServerlessMarketplace.Platform.Infrastructure.Repositories;
 using ServerlessMarketplace.Platform.Infrastructure.Services;
 
@@ -15,6 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IMarketplaceAppService, MarketplaceAppService>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<ISqsService, SqsService>();
+builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();
 

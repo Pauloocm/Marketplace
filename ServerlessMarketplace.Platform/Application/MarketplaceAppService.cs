@@ -3,7 +3,6 @@ using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Platform.Application.Products;
 using ServerlessMarketplace.Platform.Dtos;
 using ServerlessMarketplace.Platform.Infrastructure.Services;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ServerlessMarketplace.Platform.Application
 {

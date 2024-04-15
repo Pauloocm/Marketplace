@@ -10,7 +10,7 @@ namespace ServerlessMarketplace.Platform.Infrastructure.DataBase
             optionsBuilder.UseInMemoryDatabase(databaseName: "SplanDb");
         }
 
-        public DbSet<Product> Products => Set<Product>();
+        public DbSet<Product> Products { get; set; }
 
     }
 }
