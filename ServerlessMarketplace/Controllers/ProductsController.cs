@@ -20,14 +20,24 @@ namespace ServerlessMarketplace.Controllers
             return Ok(productId);
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> Get([FromRoute] Guid id, [FromRoute] GetProductFilter filter, CancellationToken cancellationToken = default)
+        [HttpGet("{productId:guid}")]
+        public async Task<IActionResult> Get([FromRoute] Guid productId, [FromRoute] GetProductFilter filter, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(filter);
 
-            var product = await marketplaceAppService.Get(filter.SetId(id), cancellationToken);
+            var product = await marketplaceAppService.Get(filter.SetId(productId), cancellationToken);
 
             return Ok(product);
+        }
+
+        [HttpGet("/Search")]
+        public async Task<IActionResult> Search([FromQuery] SearchProductsFilter filter, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(filter);
+
+            var products = await marketplaceAppService.Search(filter, cancellationToken);
+
+            return Ok(products);
         }
     }
 }
