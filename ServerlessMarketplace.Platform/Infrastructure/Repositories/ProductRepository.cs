@@ -38,7 +38,10 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Repositories
                 p.Description.Contains(term));
             }
 
-            var products = await productsQuery.ToListAsync(cancellationToken);
+            var products = await productsQuery
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
 
             return products;
         }
