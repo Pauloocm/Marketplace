@@ -11,7 +11,7 @@ namespace ServerlessMarketplace.Domain.Products
                 Name = name,
                 Description = description,
                 Price = price,
-                Category = Category.GetById(categoryId)!
+                Category = Category.GetById(categoryId) ?? throw new ArgumentNullException("Category not found: " + categoryId)
             };
 
             return product;

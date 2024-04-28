@@ -1,4 +1,5 @@
-﻿using ServerlessMarketplace.Domain.Products;
+﻿using ServerlessMarketplace.Domain.Categorys;
+using ServerlessMarketplace.Domain.Products;
 
 namespace ServerlessMarketplace.Platform.Dtos
 {
@@ -13,10 +14,23 @@ namespace ServerlessMarketplace.Platform.Dtos
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
-                //CategoryId = product.Category.Id
+                Category = Category.GetById(product.CategorytId).ToDto(),
             };
 
             return dto;            
+        }
+
+        public static CategoryDto ToDto(this Category? category)
+        {
+            if (category is null) return new CategoryDto();
+
+            var dto = new CategoryDto()
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+
+            return dto;
         }
 
         public static List<ProductDto?>? ToDto(this List<Product?>? productS)
