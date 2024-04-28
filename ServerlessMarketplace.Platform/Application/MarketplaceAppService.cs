@@ -41,5 +41,15 @@ namespace ServerlessMarketplace.Platform.Application
         {
             throw new NotImplementedException();
         }
+
+        public async Task<List<ProductDto?>?> Search(SearchProductsFilter filter, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(filter);
+
+            var products = await productRepository.Search(filter.Term, filter.SortColumn, filter.SortOrder, filter.Page, filter
+                .PageSize, cancellationToken);
+
+            return products.ToDto();
+        }
     }
 }
