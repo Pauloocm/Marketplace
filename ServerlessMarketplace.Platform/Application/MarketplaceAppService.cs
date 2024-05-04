@@ -1,14 +1,12 @@
-﻿using ServerlessMarketplace.Domain.Extensions;
-using ServerlessMarketplace.Domain.Products;
+﻿using ServerlessMarketplace.Domain.Products;
+using ServerlessMarketplace.Domain.Products.Exceptions;
 using ServerlessMarketplace.Platform.Application.Products;
 using ServerlessMarketplace.Platform.Dtos;
-using ServerlessMarketplace.Platform.Infrastructure.Services;
 
 namespace ServerlessMarketplace.Platform.Application
 {
-    public class MarketplaceAppService(ISqsService sqs, IProductRepository prodRepo) : IMarketplaceAppService
+    public class MarketplaceAppService(IProductRepository prodRepo) : IMarketplaceAppService
     {
-        private readonly ISqsService sQSService = sqs ?? throw new ArgumentNullException(nameof(sqs));
         private readonly IProductRepository productRepository = prodRepo ?? throw new ArgumentNullException(nameof(prodRepo));
         public async Task<Guid> Add(AddProductCommand command, CancellationToken cancellationToken = default)
         {
@@ -18,28 +16,26 @@ namespace ServerlessMarketplace.Platform.Application
 
             await productRepository.Add(product, cancellationToken);
 
-            await sQSService.SendProductCreatedMessage(product.ToJson(), cancellationToken);
-
             return product.Id;
         }
         public async Task<ProductDto?> Get(GetProductFilter filter, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(filter);
 
-            var product = await productRepository.GetBy(filter.Id, cancellationToken);
-
-            if(product is null) new ArgumentNullException(nameof(product));
+            var product = await productRepository.GetBy(filter.Id, cancellationToken) ?? throw new ProductNotFoundException();
 
             return product?.ToDto();
         }
 
-        public Task Update(UpdateProductCommand command, CancellationToken cancellationToken = default)
+        public async Task Update(UpdateProductCommand command, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
-        }
-        public Task Delete(Guid id, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(command);
+
+            var product = await productRepository.GetBy(command.Id, cancellationToken) ?? throw new ProductNotFoundException();
+
+            product.Update(command.Name, command.Description, command.Price, command.CategoryId);
+
+            await productRepository.Commit(cancellationToken);
         }
 
         public async Task<List<ProductDto?>?> Search(SearchProductsFilter filter, CancellationToken cancellationToken = default)
@@ -50,6 +46,15 @@ namespace ServerlessMarketplace.Platform.Application
                 .PageSize, cancellationToken);
 
             return products.ToDto();
+        }
+
+        public async Task Delete(GetProductFilter filter, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(filter);
+
+            var product = await productRepository.GetBy(filter.Id, cancellationToken) ?? throw new ProductNotFoundException();
+
+            await productRepository.Delete(product, cancellationToken);
         }
     }
 }

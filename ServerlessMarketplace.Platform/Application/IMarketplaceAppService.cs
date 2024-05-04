@@ -9,7 +9,7 @@ namespace ServerlessMarketplace.Platform.Application
         Task<List<ProductDto?>?> Search(SearchProductsFilter filter, CancellationToken cancellationToken = default);
         Task<Guid> Add(AddProductCommand command, CancellationToken cancellationToken = default);
         Task Update(UpdateProductCommand command, CancellationToken cancellationToken = default);
-        Task Delete(Guid id, CancellationToken cancellationToken = default);
+        Task Delete(GetProductFilter filter, CancellationToken cancellationToken = default);
 
         
     }

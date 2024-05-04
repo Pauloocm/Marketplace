@@ -39,5 +39,25 @@ namespace ServerlessMarketplace.Controllers
 
             return Ok(products);
         }
+
+        [HttpPut("{productId:guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid productId, [FromBody] UpdateProductCommand command, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(command);
+
+            await marketplaceAppService.Update(command.SetId(productId), cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpDelete("{productId:guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid productId, [FromRoute] GetProductFilter filter, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(filter);
+
+            await marketplaceAppService.Delete(filter.SetId(productId), cancellationToken);
+
+            return Ok();
+        }
     }
 }
