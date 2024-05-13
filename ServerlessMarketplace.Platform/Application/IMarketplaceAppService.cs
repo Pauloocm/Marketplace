@@ -5,7 +5,7 @@ namespace ServerlessMarketplace.Platform.Application
 {
     public interface IMarketplaceAppService
     {
-        Task<ProductDto?> Get(GetProductFilter filter, CancellationToken cancellationToken = default);
+        Task<ProductRecordDto?> Get(GetProductFilter filter, CancellationToken cancellationToken = default);
         Task<List<ProductDto?>?> Search(SearchProductsFilter filter, CancellationToken cancellationToken = default);
         Task<Guid> Add(AddProductCommand command, CancellationToken cancellationToken = default);
         Task Update(UpdateProductCommand command, CancellationToken cancellationToken = default);

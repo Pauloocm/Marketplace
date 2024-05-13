@@ -18,13 +18,13 @@ namespace ServerlessMarketplace.Platform.Application
 
             return product.Id;
         }
-        public async Task<ProductDto?> Get(GetProductFilter filter, CancellationToken cancellationToken = default)
+        public async Task<ProductRecordDto?> Get(GetProductFilter filter, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(filter);
 
             var product = await productRepository.GetBy(filter.Id, cancellationToken) ?? throw new ProductNotFoundException();
 
-            return product?.ToDto();
+            return product.ToRecordDto();
         }
 
         public async Task Update(UpdateProductCommand command, CancellationToken cancellationToken = default)
