@@ -45,5 +45,18 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Repositories
 
             return products;
         }
+
+        public async Task Delete(Product product, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(nameof(product));
+
+            dataContext.Products.Remove(product);
+            await dataContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task Commit(CancellationToken cancellationToken = default)
+        {
+            await dataContext.SaveChangesAsync(cancellationToken);
+        }
     }
 }

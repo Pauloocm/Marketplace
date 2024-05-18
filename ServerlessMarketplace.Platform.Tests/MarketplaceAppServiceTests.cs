@@ -1,7 +1,6 @@
 ﻿using NSubstitute;
 using ServerlessMarketplace.Platform.Application;
 using ServerlessMarketplace.Platform.Application.Products;
-using ServerlessMarketplace.Platform.Infrastructure.Services;
 
 namespace ServerlessMarketplace.Platform.Tests
 {
@@ -9,12 +8,10 @@ namespace ServerlessMarketplace.Platform.Tests
     public class MarketplaceAppServiceTests
     {
         private MarketplaceAppService appService;
-        private ISqsService SqsServ;
 
         [SetUp]
         public void Setup()
         {
-            SqsServ = Substitute.For<ISqsService>();
         }
 
         [Test]

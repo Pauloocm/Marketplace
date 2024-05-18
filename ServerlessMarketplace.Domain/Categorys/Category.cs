@@ -10,6 +10,7 @@ namespace ServerlessMarketplace.Domain.Categorys
         public static readonly Category Eletrodomestico = new(2, "Eletrodomestico");
         public static readonly Category Periferico = new(3, "Periferico");
         public static readonly Category Tv = new(4, "Tv");
+        public static readonly Category Smartphone = new(5, "Smartphone");
 
         [Required]
         public int Id { get; set; }
