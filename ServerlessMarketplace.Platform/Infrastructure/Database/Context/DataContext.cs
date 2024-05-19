@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServerlessMarketplace.Domain.Products;
 
-namespace ServerlessMarketplace.Platform.Infrastructure.DataBase
+namespace ServerlessMarketplace.Platform.Infrastructure.Database.Context
 {
     public class DataContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseInMemoryDatabase(databaseName: "SplanDb");
+            optionsBuilder.UseNpgsql("Server=localhost;Database=marketplace;Username=postgres;Password=root");
         }
 
         public DbSet<Product> Products { get; set; }

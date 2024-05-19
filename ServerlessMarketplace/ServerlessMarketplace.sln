@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessMarketplace.Domai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessMarketplace.Platform", "..\ServerlessMarketplace.Platform\ServerlessMarketplace.Platform.csproj", "{5A086471-64A4-4466-9D74-811C7F40052A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerlessMarketplace.Platform.Tests", "..\ServerlessMarketplace.Platform.Tests\ServerlessMarketplace.Platform.Tests.csproj", "{448B7CCE-52E4-46D1-BD68-C06FAECBB7B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessMarketplace.Platform.Tests", "..\ServerlessMarketplace.Platform.Tests\ServerlessMarketplace.Platform.Tests.csproj", "{448B7CCE-52E4-46D1-BD68-C06FAECBB7B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerlessMarketplace.Migrations", "..\ServerlessMarketplace.Migrations\ServerlessMarketplace.Migrations.csproj", "{C9C5D338-5462-4DB8-BD0F-4B733676947B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{448B7CCE-52E4-46D1-BD68-C06FAECBB7B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{448B7CCE-52E4-46D1-BD68-C06FAECBB7B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{448B7CCE-52E4-46D1-BD68-C06FAECBB7B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9C5D338-5462-4DB8-BD0F-4B733676947B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9C5D338-5462-4DB8-BD0F-4B733676947B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9C5D338-5462-4DB8-BD0F-4B733676947B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9C5D338-5462-4DB8-BD0F-4B733676947B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
