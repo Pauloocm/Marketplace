@@ -24,5 +24,13 @@ namespace ServerlessMarketplace.Domain.Products
         {
             Id = Guid.NewGuid();
         }
+
+        public void Update(string name, string description, decimal price, int categoryId)
+        {
+            Name = name;
+            Description = description;
+            Price = price;
+            CategorytId = categoryId;
+        }
     }
 }
