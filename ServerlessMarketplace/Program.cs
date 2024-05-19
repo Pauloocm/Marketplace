@@ -1,6 +1,6 @@
 using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Platform.Application;
-using ServerlessMarketplace.Platform.Infrastructure.DataBase;
+using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 using ServerlessMarketplace.Platform.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);

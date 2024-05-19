@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServerlessMarketplace.Domain.Products;
-using ServerlessMarketplace.Platform.Infrastructure.DataBase;
+using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 
 namespace ServerlessMarketplace.Platform.Infrastructure.Repositories
 {
