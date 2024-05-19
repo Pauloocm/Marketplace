@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServerlessMarketplace.Domain.Products;
+using ServerlessMarketplace.Platform.Infrastructure.Database.Maps;
 
 namespace ServerlessMarketplace.Platform.Infrastructure.Database.Context
 {
@@ -7,7 +8,13 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Database.Context
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=localhost;Database=marketplace;Username=postgres;Password=root");
+            optionsBuilder.UseNpgsql("Server=localhost;Database=marketplace;Username=postgres;Password=root",
+                b => b.MigrationsAssembly("ServerlessMarketplace.Migrations"));
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProductMap).Assembly);
         }
 
         public DbSet<Product> Products { get; set; }

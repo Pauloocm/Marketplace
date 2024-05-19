@@ -7,11 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ServerlessMarketplace.Domain\ServerlessMarketplace.Domain.csproj" />
+    <ProjectReference Include="..\ServerlessMarketplace.Migrations\ServerlessMarketplace.Migrations.csproj" />
     <ProjectReference Include="..\ServerlessMarketplace.Platform\ServerlessMarketplace.Platform.csproj" />
   </ItemGroup>
 
