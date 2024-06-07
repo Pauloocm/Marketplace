@@ -1,3 +1,5 @@
+using Microsoft.Extensions.DependencyInjection;
+using ServerlessMarketplace.Domain.Configs;
 using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Platform.Application;
 using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
@@ -13,6 +15,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IMarketplaceAppService, MarketplaceAppService>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<DataContext>();
+builder.Services.AddScoped<IDatabase, DataContext>(sp => sp.GetRequiredService<DataContext>());
 builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();

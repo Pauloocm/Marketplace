@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ServerlessMarketplace.Domain.Configs;
 using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 
@@ -57,6 +58,11 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Repositories
         public async Task Commit(CancellationToken cancellationToken = default)
         {
             await dataContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public Task<ITransaction> BeginTransactionAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

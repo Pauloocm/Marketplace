@@ -1,6 +1,8 @@
-﻿namespace ServerlessMarketplace.Domain.Products
+﻿using ServerlessMarketplace.Domain.Configs;
+
+namespace ServerlessMarketplace.Domain.Products
 {
-    public interface IProductRepository
+    public interface IProductRepository : IDatabase
     {
         Task Add(Product product, CancellationToken cancellationToken = default);
         Task<Product?> GetBy(Guid id, CancellationToken cancellationToken = default);
