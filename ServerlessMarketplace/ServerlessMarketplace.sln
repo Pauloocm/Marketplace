@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessMarketplace.Platf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessMarketplace.Platform.Tests", "..\ServerlessMarketplace.Platform.Tests\ServerlessMarketplace.Platform.Tests.csproj", "{448B7CCE-52E4-46D1-BD68-C06FAECBB7B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerlessMarketplace.Migrations", "..\ServerlessMarketplace.Migrations\ServerlessMarketplace.Migrations.csproj", "{C9C5D338-5462-4DB8-BD0F-4B733676947B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessMarketplace.Migrations", "..\ServerlessMarketplace.Migrations\ServerlessMarketplace.Migrations.csproj", "{C9C5D338-5462-4DB8-BD0F-4B733676947B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
