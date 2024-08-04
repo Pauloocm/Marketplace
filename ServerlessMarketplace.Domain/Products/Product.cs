@@ -15,7 +15,7 @@ namespace ServerlessMarketplace.Domain.Products
             get => category;
             set
             {
-                if(value != null)
+                if (value != null)
                     CategorytId = value.Id;
             }
         }
