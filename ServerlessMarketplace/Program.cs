@@ -1,4 +1,4 @@
-using Serilog;
+
 using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.ExceptionHandler;
 using ServerlessMarketplace.Platform.Application;
