@@ -1,6 +1,3 @@
-
-using Amazon.Extensions.NETCore.Setup;
-using Amazon.Runtime.Internal.Util;
 using Amazon.SQS;
 using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.ExceptionHandler;
