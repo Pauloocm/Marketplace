@@ -18,6 +18,7 @@ namespace ServerlessMarketplace.Platform.Application
 
             var product = ProductFactory.Create(command.Name, command.Description, command.Price, command.CategoryId);
 
+
             await productRepository.Add(product, cancellationToken);
 
             await productRepository.Commit(cancellationToken);
@@ -49,6 +50,8 @@ namespace ServerlessMarketplace.Platform.Application
             product.Update(command.Name, command.Description, command.Price, command.CategoryId);
 
             await productRepository.Commit(cancellationToken);
+
+            await eventPublisher.Publish(new ProductUpdated() { Id = product.Id, }, cancellationToken);
         }
 
         public async Task<List<ProductDto?>?> Search(SearchProductsFilter filter, CancellationToken cancellationToken = default)
@@ -70,6 +73,8 @@ namespace ServerlessMarketplace.Platform.Application
             productRepository.Delete(product);
 
             await productRepository.Commit(cancellationToken);
+
+            await eventPublisher.Publish(new ProductDeleted() { Id = product.Id, }, cancellationToken);
         }
     }
 }

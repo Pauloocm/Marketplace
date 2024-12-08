@@ -26,7 +26,7 @@ public class CloudWatchLogger(IAmazonCloudWatchLogs cloudWatchLogsClient)
         {
             LogGroupName = _logGroupName,
             LogStreamName = _logStreamName,
-            LogEvents = new List<InputLogEvent> { logEvent }
+            LogEvents = [logEvent]
         });
     }
 
@@ -39,7 +39,7 @@ public class CloudWatchLogger(IAmazonCloudWatchLogs cloudWatchLogsClient)
                 LogGroupName = _logGroupName
             });
         }
-        catch (Amazon.CloudWatchLogs.Model.ResourceAlreadyExistsException)
+        catch (ResourceAlreadyExistsException)
         {
             // Log group already exists; no action needed
         }
@@ -55,7 +55,7 @@ public class CloudWatchLogger(IAmazonCloudWatchLogs cloudWatchLogsClient)
                 LogStreamName = _logStreamName
             });
         }
-        catch (Amazon.CloudWatchLogs.Model.ResourceAlreadyExistsException)
+        catch (ResourceAlreadyExistsException)
         {
             // Log stream already exists; no action needed
         }
