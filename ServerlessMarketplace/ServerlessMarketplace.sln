@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessMarketplace.Platf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessMarketplace.Migrations", "..\ServerlessMarketplace.Migrations\ServerlessMarketplace.Migrations.csproj", "{C9C5D338-5462-4DB8-BD0F-4B733676947B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.Domain.Events", "..\Marketplace.Domain.Events\Marketplace.Domain.Events.csproj", "{B6FA7E74-79CC-4A59-A0C5-AE75CAA451E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketplace.Domain.Events", "..\Marketplace.Domain.Events\Marketplace.Domain.Events.csproj", "{B6FA7E74-79CC-4A59-A0C5-AE75CAA451E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

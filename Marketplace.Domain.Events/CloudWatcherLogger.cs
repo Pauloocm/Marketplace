@@ -1,6 +1,8 @@
 ﻿using Amazon.CloudWatchLogs;
 using Amazon.CloudWatchLogs.Model;
 
+namespace Marketplace.Domain.Events;
+
 public class CloudWatchLogger(IAmazonCloudWatchLogs cloudWatchLogsClient)
 {
     private readonly IAmazonCloudWatchLogs _cloudWatchLogsClient = cloudWatchLogsClient;

@@ -14,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
+
 var awsResult = builder.Configuration.GetAWSOptions();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -24,10 +26,9 @@ builder.Services.AddTransient<IEventPublisher, EventPublisher>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddDbContext<DataContext>();
 
-
+var test = builder.Configuration.GetAWSOptions();
 
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
-builder.Services.AddAWSService<IAmazonSQS>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -43,7 +44,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseExceptionHandler();
+//app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 
@@ -52,3 +53,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+
