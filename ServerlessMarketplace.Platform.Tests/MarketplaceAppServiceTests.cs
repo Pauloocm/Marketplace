@@ -7,7 +7,7 @@ namespace ServerlessMarketplace.Platform.Tests
     [TestFixture]
     public class MarketplaceAppServiceTests
     {
-        private MarketplaceAppService appService;
+        private readonly MarketplaceAppService appService = null!;
 
         [SetUp]
         public void Setup()
@@ -17,7 +17,7 @@ namespace ServerlessMarketplace.Platform.Tests
         [Test]
         public void Add_Should_Throw_If_Command_Is_Invalid()
         {
-            Assert.ThrowsAsync<NullReferenceException>(async () => await appService.Add((AddProductCommand)null, Arg.Any<CancellationToken>()));
+            Assert.ThrowsAsync<NullReferenceException>(async () => await appService.Add((AddProductCommand)null!, Arg.Any<CancellationToken>()));
         }
 
     }

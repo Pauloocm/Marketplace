@@ -11,8 +11,8 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Database.Context
             optionsBuilder.UseNpgsql("Server=localhost;Database=marketplace;Username=postgres;Password=root",
                 b => b.MigrationsAssembly("ServerlessMarketplace.Migrations"));
 
-            optionsBuilder.LogTo(Console.WriteLine);
-            optionsBuilder.EnableSensitiveDataLogging();
+            //optionsBuilder.LogTo(Console.WriteLine);
+            //optionsBuilder.EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

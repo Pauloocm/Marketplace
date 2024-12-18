@@ -13,24 +13,24 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Repositories
             ArgumentNullException.ThrowIfNull(nameof(product));
 
             await dataContext.Products.AddAsync(product, cancellationToken);
-            await dataContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<Product?> GetBy(Guid id, CancellationToken cancellationToken = default)
         {
             if (id == Guid.Empty)
             {
-                await Task.FromResult<Product>(null);
+                await Task.FromResult<Product>(null!);
             }
-            var product = await dataContext.Products.FindAsync(id, cancellationToken);
+            var product = await dataContext.Products.FindAsync([id, cancellationToken], cancellationToken: cancellationToken);
 
             return product;
         }
 
-        public async Task<List<Product?>> Search(string? term, string? sortColumn, string? sortOrder, int page, int pageSize, CancellationToken cancellationToken = default)
+        public async Task<List<Product?>> Search(string? term, string? sortColumn, string? sortOrder,
+            int page, int pageSize, CancellationToken cancellationToken = default)
         {
             IQueryable<Product?> productsQuery = dataContext.Products;
-
+                
             if (!string.IsNullOrWhiteSpace(term))
             {
                 productsQuery = productsQuery.Where(p =>
@@ -46,12 +46,11 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Repositories
             return products;
         }
 
-        public async Task Delete(Product product, CancellationToken cancellationToken = default)
+        public void Delete(Product product)
         {
             ArgumentNullException.ThrowIfNull(nameof(product));
 
             dataContext.Products.Remove(product);
-            await dataContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task Commit(CancellationToken cancellationToken = default)
