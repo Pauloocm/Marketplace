@@ -8,6 +8,7 @@ namespace ServerlessMarketplace.Platform.Application
     public class MarketplaceAppService(IProductRepository prodRepo) : IMarketplaceAppService
     {
         private readonly IProductRepository productRepository = prodRepo ?? throw new ArgumentNullException(nameof(prodRepo));
+
         public async Task<Guid> Add(AddProductCommand command, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(command);
@@ -15,6 +16,8 @@ namespace ServerlessMarketplace.Platform.Application
             var product = ProductFactory.Create(command.Name, command.Description, command.Price, command.CategoryId);
 
             await productRepository.Add(product, cancellationToken);
+
+            await productRepository.Commit(cancellationToken);
 
             return product.Id;
         }
@@ -42,7 +45,7 @@ namespace ServerlessMarketplace.Platform.Application
         {
             ArgumentNullException.ThrowIfNull(filter);
 
-            var products = await productRepository.Search(filter.Term, filter.SortColumn, filter.SortOrder, filter.Page, filter
+            var products = await productRepository.Search(filter.Term, filter.Page, filter
                 .PageSize, cancellationToken);
 
             return products.ToDto();
@@ -54,7 +57,9 @@ namespace ServerlessMarketplace.Platform.Application
 
             var product = await productRepository.GetBy(filter.Id, cancellationToken) ?? throw new ProductNotFoundException();
 
-            await productRepository.Delete(product, cancellationToken);
+            productRepository.Delete(product);
+
+            await productRepository.Commit(cancellationToken);
         }
     }
 }
