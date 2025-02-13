@@ -9,11 +9,6 @@ namespace ServerlessMarketplace.Platform.Tests
     {
         private readonly MarketplaceAppService appService = null!;
 
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
         public void Add_Should_Throw_If_Command_Is_Invalid()
         {

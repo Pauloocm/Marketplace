@@ -26,15 +26,15 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Repositories
             return product;
         }
 
-        public async Task<List<Product?>> Search(string? term, string? sortColumn, string? sortOrder,
-            int page, int pageSize, CancellationToken cancellationToken = default)
+        public async Task<List<Product?>> Search(string? term, int page = 1, int pageSize = 1,
+            CancellationToken cancellationToken = default)
         {
             IQueryable<Product?> productsQuery = dataContext.Products;
-                
+
             if (!string.IsNullOrWhiteSpace(term))
             {
                 productsQuery = productsQuery.Where(p =>
-                p.Name.Contains(term) ||
+                p!.Name.Contains(term) ||
                 p.Description.Contains(term));
             }
 

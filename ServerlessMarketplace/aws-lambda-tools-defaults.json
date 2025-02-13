@@ -2,12 +2,12 @@
   "Information": [
     "Lambda function for products rest api"
   ],
-  "profile": "",
+  "profile": "default",
   "region": "sa-east-1",
   "configuration": "Release",
   "function-runtime": "dotnet8",
   "function-memory-size": 256,
-  "function-timeout": 30,
+  "function-timeout": 120,
   "function-handler": "ServerlessMarketplace",
   "function-name": "ProductsApi",
   "environment-variables": "ASPNETCORE_ENVIRONMENT=Development;SOMETHING_ELSE=SomeValue",
