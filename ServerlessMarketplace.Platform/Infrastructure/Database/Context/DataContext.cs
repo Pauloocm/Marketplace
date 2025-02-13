@@ -4,17 +4,8 @@ using ServerlessMarketplace.Platform.Infrastructure.Database.Maps;
 
 namespace ServerlessMarketplace.Platform.Infrastructure.Database.Context
 {
-    public class DataContext : DbContext
+    public class DataContext(DbContextOptions options) : DbContext(options)
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("Server=localhost;Database=marketplace;Username=postgres;Password=root",
-                b => b.MigrationsAssembly("ServerlessMarketplace.Migrations"));
-
-            optionsBuilder.LogTo(Console.WriteLine);
-            optionsBuilder.EnableSensitiveDataLogging();
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProductMap).Assembly);

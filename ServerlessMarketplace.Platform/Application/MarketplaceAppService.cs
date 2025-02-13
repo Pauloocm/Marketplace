@@ -1,18 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
-using ServerlessMarketplace.Domain.Categorys;
-using ServerlessMarketplace.Domain.Products;
+﻿using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Domain.Products.Exceptions;
 using ServerlessMarketplace.Platform.Application.Products;
 using ServerlessMarketplace.Platform.Dtos;
-using ServerlessMarketplace.Platform.Infrastructure.Queue;
-using ServerlessMarketplace.Platform.Message;
 
 namespace ServerlessMarketplace.Platform.Application
 {
-    public class MarketplaceAppService(IProductRepository prodRepo, ISqsPublisher sqsPublisher) : IMarketplaceAppService
+    public class MarketplaceAppService(IProductRepository prodRepo) : IMarketplaceAppService
     {
         private readonly IProductRepository productRepository = prodRepo ?? throw new ArgumentNullException(nameof(prodRepo));
-        private readonly ISqsPublisher publisher = sqsPublisher ?? throw new ArgumentNullException(nameof(sqsPublisher));
 
         public async Task<Guid> Add(AddProductCommand command, CancellationToken cancellationToken = default)
         {
@@ -20,12 +15,9 @@ namespace ServerlessMarketplace.Platform.Application
 
             var product = ProductFactory.Create(command.Name, command.Description, command.Price, command.CategoryId);
 
-            var test = Category.GetById(command.CategoryId)?.Name;
-
             await productRepository.Add(product, cancellationToken);
 
-            await publisher.PublishMessage(new ProductCreated(product.Id, product.Name, product.Description,
-                product.Price, Category.GetById(command.CategoryId)?.Name), cancellationToken);
+            await productRepository.Commit(cancellationToken);
 
             return product.Id;
         }
@@ -53,7 +45,7 @@ namespace ServerlessMarketplace.Platform.Application
         {
             ArgumentNullException.ThrowIfNull(filter);
 
-            var products = await productRepository.Search(filter.Term, filter.SortColumn, filter.SortOrder, filter.Page, filter
+            var products = await productRepository.Search(filter.Term, filter.Page, filter
                 .PageSize, cancellationToken);
 
             return products.ToDto();
@@ -65,7 +57,9 @@ namespace ServerlessMarketplace.Platform.Application
 
             var product = await productRepository.GetBy(filter.Id, cancellationToken) ?? throw new ProductNotFoundException();
 
-            await productRepository.Delete(product, cancellationToken);
+            productRepository.Delete(product);
+
+            await productRepository.Commit(cancellationToken);
         }
     }
 }
