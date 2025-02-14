@@ -6,7 +6,7 @@ namespace ServerlessMarketplace.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductsController(IMarketplaceAppService appService) : ControllerBase()
+    public class ProductController(IMarketplaceAppService appService) : ControllerBase()
     {
         private readonly IMarketplaceAppService marketplaceAppService = appService ?? throw new ArgumentNullException(nameof(appService));
 
