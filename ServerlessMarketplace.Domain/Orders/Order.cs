@@ -9,9 +9,7 @@ public class Order
     public Customer Customer { get; set; } = null!;
     public List<OrderItem> Products { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
-
-    private decimal total => Products.Sum(x => x.Price * x.Quantity);
-    public decimal Total => total;
+    public decimal Total => Products.Sum(x => x.Price * x.Quantity);
 }
 
 

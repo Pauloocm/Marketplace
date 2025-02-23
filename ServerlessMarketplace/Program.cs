@@ -19,7 +19,7 @@ builder.Services.AddTransient<IMarketplaceAppService, MarketplaceAppService>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 
 builder.Services.AddDbContext<DataContext>(
-    options => options.UseNpgsql($"Server=localhost:5433;Database=Products;Username=postgres;Password=root",
+    options => options.UseNpgsql($"Server=localhost:5433;Database=Product;Username=postgres;Password=root",
     b => b.MigrationsAssembly("ServerlessMarketplace.Migrations")));
 
 

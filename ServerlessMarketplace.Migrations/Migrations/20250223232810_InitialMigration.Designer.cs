@@ -12,8 +12,8 @@ using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 namespace ServerlessMarketplace.Migrations.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250220105150_FixingMapps")]
-    partial class FixingMapps
+    [Migration("20250223232810_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace ServerlessMarketplace.Migrations.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("character varying(5)");
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
 
                     b.Property<string>("State")
                         .IsRequired()
@@ -82,7 +82,6 @@ namespace ServerlessMarketplace.Migrations.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("Age")
-                        .HasMaxLength(10)
                         .HasColumnType("integer");
 
                     b.Property<string>("Email")
@@ -97,7 +96,7 @@ namespace ServerlessMarketplace.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customer");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("ServerlessMarketplace.Domain.Orders.Order", b =>
@@ -111,21 +110,11 @@ namespace ServerlessMarketplace.Migrations.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CustomerId1")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("Total")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("numeric")
-                        .HasComputedColumnSql("SELECT COALESCE(SUM(oi.Price * oi.Quantity), 0) FROM OrderItems oi WHERE oi.OrderId = Id", true);
-
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("CustomerId1");
-
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ServerlessMarketplace.Domain.Orders.OrderItem", b =>
@@ -133,14 +122,17 @@ namespace ServerlessMarketplace.Migrations.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -151,13 +143,16 @@ namespace ServerlessMarketplace.Migrations.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("ServerlessMarketplace.Domain.Products.Product", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Category")
                         .HasColumnType("integer");
@@ -197,14 +192,10 @@ namespace ServerlessMarketplace.Migrations.Migrations
             modelBuilder.Entity("ServerlessMarketplace.Domain.Orders.Order", b =>
                 {
                     b.HasOne("ServerlessMarketplace.Domain.Customers.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("OrdersHistory")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ServerlessMarketplace.Domain.Customers.Customer", null)
-                        .WithMany("OrdersHistory")
-                        .HasForeignKey("CustomerId1");
 
                     b.Navigation("Customer");
                 });

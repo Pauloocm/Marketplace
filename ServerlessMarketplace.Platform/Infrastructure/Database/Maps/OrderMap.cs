@@ -12,9 +12,9 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Database.Maps
             builder.Property(p => p.Id).ValueGeneratedNever();
             builder.Property(p => p.CustomerId).ValueGeneratedNever();
 
-            builder.Property(p => p.CreatedAt).IsRequired();
+            builder.Property(p => p.CreatedAt);
 
-            builder.Property(p => p.Total).IsRequired();
+            builder.Ignore(p => p.Total);
 
             builder.HasOne(p => p.Customer)
                .WithMany(c => c.OrdersHistory)
