@@ -10,15 +10,15 @@ namespace ServerlessMarketplace.Controllers
     {
         // private readonly IMarketplaceAppService marketplaceAppService = appService ?? throw new ArgumentNullException(nameof(appService));
 
-        [HttpPost]
-        public async Task<IActionResult> Add([FromBody] AddProductCommand command, CancellationToken cancellationToken = default)
-        {
-            ArgumentNullException.ThrowIfNull(command);
-            
-            
-
-            return Ok();
-        }
+        // [HttpPost]
+        // public Task<IActionResult> Add([FromBody] AddProductCommand command, CancellationToken cancellationToken = default)
+        // {
+        //     ArgumentNullException.ThrowIfNull(command);
+        //     
+        //     
+        //
+        //     return Ok();
+        // }
 
         // [HttpGet("{productId:guid}")]
         // public async Task<IActionResult> Get([FromRoute] Guid productId, [FromRoute] GetProductFilter filter, CancellationToken cancellationToken = default)
