@@ -12,8 +12,8 @@ using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 namespace ServerlessMarketplace.Migrations.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250220104703_AddingMaps")]
-    partial class AddingMaps
+    [Migration("20250223233406_AnotherMigration")]
+    partial class AnotherMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace ServerlessMarketplace.Migrations.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("character varying(5)");
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
 
                     b.Property<string>("State")
                         .IsRequired()
@@ -82,7 +82,6 @@ namespace ServerlessMarketplace.Migrations.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("Age")
-                        .HasMaxLength(10)
                         .HasColumnType("integer");
 
                     b.Property<string>("Email")
@@ -92,12 +91,12 @@ namespace ServerlessMarketplace.Migrations.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasMaxLength(210)
+                        .HasColumnType("character varying(210)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customer");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("ServerlessMarketplace.Domain.Orders.Order", b =>
@@ -111,16 +110,11 @@ namespace ServerlessMarketplace.Migrations.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
-                    b.Property<decimal>("Total")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("numeric")
-                        .HasComputedColumnSql("SELECT COALESCE(SUM(p.Price), 0) FROM Products p WHERE p.OrderId = Id", true);
-
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ServerlessMarketplace.Domain.Orders.OrderItem", b =>
@@ -128,14 +122,17 @@ namespace ServerlessMarketplace.Migrations.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -146,13 +143,16 @@ namespace ServerlessMarketplace.Migrations.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("ServerlessMarketplace.Domain.Products.Product", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Category")
                         .HasColumnType("integer");

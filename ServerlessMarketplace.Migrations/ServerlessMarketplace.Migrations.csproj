@@ -17,4 +17,8 @@
     <ProjectReference Include="..\ServerlessMarketplace.Platform\ServerlessMarketplace.Platform.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

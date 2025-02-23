@@ -16,7 +16,7 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Database.Maps
             builder.Property(p => p.State).HasMaxLength(100).IsRequired();
             builder.Property(p => p.City).HasMaxLength(100).IsRequired();
             builder.Property(p => p.Street).HasMaxLength(100).IsRequired();
-            builder.Property(p => p.Number).HasMaxLength(5).IsRequired();
+            builder.Property(p => p.Number).HasMaxLength(10).IsRequired();
             builder.Property(p => p.ZipCode).HasMaxLength(10).IsRequired();
             builder.Property(p => p.Complement).HasMaxLength(200);
             
