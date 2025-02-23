@@ -19,6 +19,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ServerlessMarketplace.Domain\ServerlessMarketplace.Domain.csproj" />
+		<ProjectReference Include="..\ServerlessMarketplace.Migrations\ServerlessMarketplace.Migrations.csproj" />
 		<ProjectReference Include="..\ServerlessMarketplace.Platform\ServerlessMarketplace.Platform.csproj" />
 	</ItemGroup>
 

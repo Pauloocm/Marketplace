@@ -1,4 +1,4 @@
-using ServerlessMarketplace.Domain.Products;
+using ServerlessMarketplace.Domain.Customers;
 
 namespace ServerlessMarketplace.Domain.Orders;
 
@@ -6,18 +6,22 @@ public class Order
 {
     public Guid Id { get; set; }
     public Guid CustomerId { get; set; }
-    private List<Product> Products { get; set; } = null!;
-    public DateTime Created { get; set; }
-    public decimal Total => Products.Count == 0 ? 0 : Products.Sum(x => x.Price);
+    public Customer Customer { get; set; } = null!;
+    public List<OrderItem> Products { get; set; } = null!;
+    public DateTime CreatedAt { get; set; }
 
-    // public AddProduct(Product product)
-    // {
-    //     ArgumentNullException.ThrowIfNull(product);
-    //
-    //     product.EnsureIsValid();
-    //
-    //     Products ??= [];
-    //
-    //     Products.Add(product);
-    // }
+    private decimal total => Products.Sum(x => x.Price * x.Quantity);
+    public decimal Total => total;
 }
+
+
+// public AddProduct(Product product)
+// {
+//     ArgumentNullException.ThrowIfNull(product);
+//
+//     product.EnsureIsValid();
+//
+//     Products ??= [];
+//
+//     Products.Add(product);
+// }

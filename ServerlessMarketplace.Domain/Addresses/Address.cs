@@ -1,3 +1,5 @@
+using ServerlessMarketplace.Domain.Customers;
+
 namespace ServerlessMarketplace.Domain.Addresses;
 
 public class Address
@@ -5,7 +7,7 @@ public class Address
     public Guid Id { get; set; } = Guid.NewGuid();
     public Guid CustomerId { get; set; }
 
-    public Customer.Customer Customer { get; set; } = null!;
+    public Customer Customer { get; set; } = null!;
     public string ZipCode { get; set; } = null!;
     public string Country { get; set; } = null!;
     public string State { get; set; } = null!;

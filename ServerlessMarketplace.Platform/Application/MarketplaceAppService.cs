@@ -9,7 +9,7 @@ namespace ServerlessMarketplace.Platform.Application
     {
         private readonly IProductRepository productRepository = prodRepo ?? throw new ArgumentNullException(nameof(prodRepo));
 
-        public async Task<Guid> Add(AddProductCommand command, CancellationToken cancellationToken = default)
+        public async Task<int> Add(AddProductCommand command, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(command);
 

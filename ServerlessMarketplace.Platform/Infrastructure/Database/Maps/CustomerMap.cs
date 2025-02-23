@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ServerlessMarketplace.Domain.Addresses;
-using ServerlessMarketplace.Domain.Customer;
+using ServerlessMarketplace.Domain.Customers;
 
 namespace ServerlessMarketplace.Platform.Infrastructure.Database.Maps
 {
@@ -11,12 +10,14 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Database.Maps
         {
             builder.HasKey(c => c.Id);
             builder.Property(c => c.Id).ValueGeneratedNever();
-            
+
             builder.Property(p => p.Name).HasMaxLength(200).IsRequired();
-            builder.Property(p => p.Age).HasMaxLength(10).IsRequired();
+            builder.Property(p => p.Age).IsRequired();
             builder.Property(p => p.Email).HasMaxLength(150).IsRequired();
-            //TODO finalizar mapeamento
-            // builder.HasMany(p => p.OrdersHistory).map
+
+            builder.HasMany(c => c.OrdersHistory)
+                .WithOne(p => p.Customer)
+                .HasForeignKey(p => p.CustomerId);
         }
     }
 }

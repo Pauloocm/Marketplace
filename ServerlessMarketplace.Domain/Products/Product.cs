@@ -4,16 +4,12 @@ namespace ServerlessMarketplace.Domain.Products
 {
     public class Product
     {
-        public Product()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        public Guid Id { get; set; }
+        public int Id { get; private set; }
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
-        public int CategorytId { get; private set; }
+        public int CategoryId { get; private set; }
+        
         private readonly Category category = null!;
         public Category Category 
         {
@@ -21,7 +17,7 @@ namespace ServerlessMarketplace.Domain.Products
             set
             {
                 if (value != null)
-                    CategorytId = value.Id;
+                    CategoryId = value.Id;
             }
         }
 
@@ -30,7 +26,7 @@ namespace ServerlessMarketplace.Domain.Products
             Name = name;
             Description = description;
             Price = price;
-            CategorytId = categoryId;
+            CategoryId = categoryId;
         }
     }
 }
