@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
@@ -11,9 +12,11 @@ using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 namespace ServerlessMarketplace.Migrations.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250220104703_AddingMaps")]
+    partial class AddingMaps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,19 +111,14 @@ namespace ServerlessMarketplace.Migrations.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CustomerId1")
-                        .HasColumnType("uuid");
-
                     b.Property<decimal>("Total")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("numeric")
-                        .HasComputedColumnSql("SELECT COALESCE(SUM(oi.Price * oi.Quantity), 0) FROM OrderItems oi WHERE oi.OrderId = Id", true);
+                        .HasComputedColumnSql("SELECT COALESCE(SUM(p.Price), 0) FROM Products p WHERE p.OrderId = Id", true);
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("CustomerId1");
 
                     b.ToTable("Order");
                 });
@@ -194,14 +192,10 @@ namespace ServerlessMarketplace.Migrations.Migrations
             modelBuilder.Entity("ServerlessMarketplace.Domain.Orders.Order", b =>
                 {
                     b.HasOne("ServerlessMarketplace.Domain.Customers.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("OrdersHistory")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ServerlessMarketplace.Domain.Customers.Customer", null)
-                        .WithMany("OrdersHistory")
-                        .HasForeignKey("CustomerId1");
 
                     b.Navigation("Customer");
                 });

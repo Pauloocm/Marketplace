@@ -14,7 +14,7 @@ namespace ServerlessMarketplace.Platform.Dtos
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
-                Category = Category.GetById(product.CategorytId).ToDto(),
+                Category = Category.GetById(product.CategoryId).ToDto(),
             };
 
             return dto;
@@ -24,7 +24,7 @@ namespace ServerlessMarketplace.Platform.Dtos
         {
             if (product is null) return null;
 
-            return new ProductRecordDto(product.Name, product.Description, product.Price, Category.GetById(product.CategorytId).ToDto());
+            return new ProductRecordDto(product.Name, product.Description, product.Price, Category.GetById(product.CategoryId).ToDto());
         }
 
         public static CategoryDto ToDto(this Category? category)
