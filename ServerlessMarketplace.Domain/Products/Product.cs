@@ -1,27 +1,25 @@
-﻿using ServerlessMarketplace.Domain.Categorys;
+﻿using System.ComponentModel.DataAnnotations;
+using ServerlessMarketplace.Domain.Categorys;
 
 namespace ServerlessMarketplace.Domain.Products
 {
-    public class Product
+    public class Product : IValidatableObject
     {
-        public Product()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        public Guid Id { get; set; }
+        public int Id { get; private set; }
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
-        public int CategorytId { get; private set; }
+        public int CategoryId { get; private set; }
+
         private readonly Category category = null!;
-        public Category Category 
+
+        public Category Category
         {
             get => category;
             set
             {
                 if (value != null)
-                    CategorytId = value.Id;
+                    CategoryId = value.Id;
             }
         }
 
@@ -30,7 +28,13 @@ namespace ServerlessMarketplace.Domain.Products
             Name = name;
             Description = description;
             Price = price;
-            CategorytId = categoryId;
+            CategoryId = categoryId;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (string.IsNullOrWhiteSpace(Name) || Name.Length < 3)
+                yield return new ValidationResult("Invalid description", [nameof(Description)]);
         }
     }
 }

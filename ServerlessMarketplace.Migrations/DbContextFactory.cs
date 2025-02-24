@@ -4,16 +4,16 @@ using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 
 namespace ServerlessMarketplace.Migrations
 {
-    //    public class DbContextFactory : IDesignTimeDbContextFactory<DataContext>
-    //    {
-    //        public DataContext CreateDbContext(string[] args)
-    //        {
-    //            var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
+    public class DbContextFactory : IDesignTimeDbContextFactory<DataContext>
+    {
+        public DataContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
 
-    //            optionsBuilder.UseNpgsql("Server=localhost;Database=marketplace;Username=postgres;Password=root;TrustServerCertificate=True", 
-    //                b => b.MigrationsAssembly("ServerlessMarketplace.Migrations"));
+            optionsBuilder.UseNpgsql("Server=localhost:5433;Database=Product;Username=postgres;Password=root", 
+                b => b.MigrationsAssembly("ServerlessMarketplace.Migrations"));
 
-    //            return new DataContext();
-    //        }
-    //    }
+            return new DataContext(optionsBuilder.Options);
+        }
+    }
 }
