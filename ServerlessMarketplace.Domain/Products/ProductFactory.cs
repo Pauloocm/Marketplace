@@ -1,4 +1,6 @@
-﻿using ServerlessMarketplace.Domain.Categorys;
+﻿using System.ComponentModel.DataAnnotations;
+using ServerlessMarketplace.Domain.Categorys;
+using ServerlessMarketplace.Domain.Extensions;
 
 namespace ServerlessMarketplace.Domain.Products
 {
@@ -13,6 +15,8 @@ namespace ServerlessMarketplace.Domain.Products
                 Price = price,
                 Category = Category.GetById(categoryId) ?? throw new ArgumentNullException("Category not found: " + categoryId)
             };
+
+            product.EnsureIsValid();
 
             return product;
         }
