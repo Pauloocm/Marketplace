@@ -5,9 +5,9 @@ using ServerlessMarketplace.Platform.Application.Products;
 namespace ServerlessMarketplace.Platform.Tests
 {
     [TestFixture]
-    public class MarketplaceAppServiceTests
+    public class ProductAppServiceTests
     {
-        private readonly MarketplaceAppService appService = null!;
+        private readonly ProductAppService appService = null!;
 
         [Test]
         public void Add_Should_Throw_If_Command_Is_Invalid()

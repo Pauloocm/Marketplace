@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using ServerlessMarketplace.Domain.Customers;
 using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.ExceptionHandler;
 using ServerlessMarketplace.Platform.Application;
+using ServerlessMarketplace.Platform.Application.Customers;
+using ServerlessMarketplace.Platform.Application.Products;
 using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 using ServerlessMarketplace.Platform.Infrastructure.Repositories;
 
@@ -15,8 +18,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddTransient<IMarketplaceAppService, MarketplaceAppService>();
+builder.Services.AddTransient<IProductAppService, ProductAppService>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<ICustomerAppService, CustomerAppService>();
+builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
 
 builder.Services.AddDbContext<DataContext>(
     options => options.UseNpgsql($"Server=localhost:5433;Database=Product;Username=postgres;Password=root",
