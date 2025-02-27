@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServerlessMarketplace.Platform.Application;
 using ServerlessMarketplace.Platform.Application.Products;
 
 namespace ServerlessMarketplace.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductController(IMarketplaceAppService appService) : ControllerBase()
+    public class ProductController(IProductAppService appService) : ControllerBase()
     {
-        private readonly IMarketplaceAppService marketplaceAppService = appService ?? throw new ArgumentNullException(nameof(appService));
+        private readonly IProductAppService _productAppService = appService ?? throw new ArgumentNullException(nameof(appService));
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] AddProductCommand command, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(command);
 
-            var productId = await marketplaceAppService.Add(command, cancellationToken);
+            var productId = await _productAppService.Add(command, cancellationToken);
 
             return Ok(productId);
         }
@@ -25,7 +24,7 @@ namespace ServerlessMarketplace.Controllers
         {
             ArgumentNullException.ThrowIfNull(filter);
 
-            var product = await marketplaceAppService.Get(filter.SetId(productId), cancellationToken);
+            var product = await _productAppService.Get(filter.SetId(productId), cancellationToken);
 
             return Ok(product);
         }
@@ -35,7 +34,7 @@ namespace ServerlessMarketplace.Controllers
         {
             ArgumentNullException.ThrowIfNull(filter);
 
-            var products = await marketplaceAppService.Search(filter, cancellationToken);
+            var products = await _productAppService.Search(filter, cancellationToken);
 
             return Ok(products);
         }
@@ -45,7 +44,7 @@ namespace ServerlessMarketplace.Controllers
         {
             ArgumentNullException.ThrowIfNull(command);
 
-            await marketplaceAppService.Update(command.SetId(productId), cancellationToken);
+            await _productAppService.Update(command.SetId(productId), cancellationToken);
 
             return Ok();
         }
@@ -55,7 +54,7 @@ namespace ServerlessMarketplace.Controllers
         {
             ArgumentNullException.ThrowIfNull(filter);
 
-            await marketplaceAppService.Delete(filter.SetId(productId), cancellationToken);
+            await _productAppService.Delete(filter.SetId(productId), cancellationToken);
 
             return Ok();
         }

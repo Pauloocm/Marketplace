@@ -1,11 +1,10 @@
 ﻿using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Domain.Products.Exceptions;
-using ServerlessMarketplace.Platform.Application.Products;
 using ServerlessMarketplace.Platform.Dtos;
 
-namespace ServerlessMarketplace.Platform.Application
+namespace ServerlessMarketplace.Platform.Application.Products
 {
-    public class MarketplaceAppService(IProductRepository prodRepo) : IMarketplaceAppService
+    public class ProductAppService(IProductRepository prodRepo) : IProductAppService
     {
         private readonly IProductRepository productRepository = prodRepo ?? throw new ArgumentNullException(nameof(prodRepo));
 
