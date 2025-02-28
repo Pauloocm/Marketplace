@@ -14,7 +14,7 @@ public class CustomerAppService(ICustomerRepository customerRepo) : ICustomerApp
         command.EnsureIsValid();
 
         var customer = CustomerFactory.Create(command.Email, command.Name, command.Age);
-
+        
         await customerRepository.Add(customer, ct);
         
         await customerRepository.Commit(ct);

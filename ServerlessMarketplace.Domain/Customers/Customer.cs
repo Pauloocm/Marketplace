@@ -1,4 +1,5 @@
 using ServerlessMarketplace.Domain.Addresses;
+using ServerlessMarketplace.Domain.Extensions;
 using ServerlessMarketplace.Domain.Orders;
 
 namespace ServerlessMarketplace.Domain.Customers;
@@ -9,13 +10,12 @@ public class Customer
     public string Name { get; set; } = null!;
     public int Age { get; set; }
     public string Email { get; set; } = null!;
-    public Address Address { get; set; } = null!;
+    public Address? Address { get; set; }
     public List<Order>? OrdersHistory { get; private set; }
 
     public void UpdateOrderHistory(Order order)
     {
-        //TODO create order.IsValid() method
-        ArgumentNullException.ThrowIfNull(order);
+        order.EnsureIsValid();
 
         OrdersHistory ??= [];
 
