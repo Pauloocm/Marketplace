@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServerlessMarketplace.Platform.Application.Customers;
 using ServerlessMarketplace.Platform.Application.Customers.Commands;
+using ServerlessMarketplace.Platform.Application.Orders;
 
 namespace ServerlessMarketplace.Controllers
 {
@@ -20,15 +21,15 @@ namespace ServerlessMarketplace.Controllers
             return Ok(customerId);
         }
 
-        // [HttpGet("{productId:guid}")]
-        // public async Task<IActionResult> Get([FromRoute] Guid productId, [FromRoute] GetProductFilter filter, CancellationToken cancellationToken = default)
-        // {
-        //     ArgumentNullException.ThrowIfNull(filter);
-        //
-        //     var product = await marketplaceAppService.Get(filter.SetId(productId), cancellationToken);
-        //
-        //     return Ok(product);
-        // }
+        [HttpGet("{productId:guid}")]
+        public async Task<IActionResult> Order([FromBody] AddOrderCommand command,  CancellationToken ct = default)
+        {
+            ArgumentNullException.ThrowIfNull(command);
+        
+            var product = await customerAppService.AddOrder(command, ct);
+        
+            return Ok(product);
+        }
         //
         // [HttpGet("/Search")]
         // public async Task<IActionResult> Search([FromQuery] SearchProductsFilter filter, CancellationToken cancellationToken = default)
