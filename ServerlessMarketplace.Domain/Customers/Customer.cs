@@ -1,6 +1,7 @@
 using ServerlessMarketplace.Domain.Addresses;
 using ServerlessMarketplace.Domain.Extensions;
 using ServerlessMarketplace.Domain.Orders;
+using ServerlessMarketplace.Domain.Products;
 
 namespace ServerlessMarketplace.Domain.Customers;
 
@@ -12,6 +13,7 @@ public class Customer
     public string Email { get; set; } = null!;
     public Address? Address { get; set; }
     public List<Order>? OrdersHistory { get; private set; }
+    public List<Product>? WishList { get; private set; }
 
     public void UpdateOrderHistory(Order order)
     {
@@ -24,5 +26,25 @@ public class Customer
             throw new InvalidOperationException($"Order with id {order.Id} already exists.");
 
         OrdersHistory.Add(order);
+    }
+
+    public void UpdateWishList(List<Product> products)
+    {
+        products.EnsureIsValid();
+
+        foreach (var product in products)
+            UpdateWishList(product);
+    }
+
+    private void UpdateWishList(Product product)
+    {
+        product.EnsureIsValid();
+
+        WishList ??= [];
+
+        //TODO Is really necessary to throw a exception for this case? 
+        if (WishList.Exists(p => p.Id == product.Id)) return;
+
+        WishList.Add(product);
     }
 }

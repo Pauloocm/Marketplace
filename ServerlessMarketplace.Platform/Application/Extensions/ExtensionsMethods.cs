@@ -13,5 +13,10 @@
 
             return value.Contains('@');
         }
+
+        public static bool IsEmpty(this Guid value)
+        {
+            return value == Guid.Empty;
+        }
     }
 }
