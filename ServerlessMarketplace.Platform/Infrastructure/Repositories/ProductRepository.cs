@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 
@@ -21,9 +22,19 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Repositories
             {
                 await Task.FromResult<Product>(null!);
             }
-            var product = await dataContext.Products.FindAsync([id, cancellationToken], cancellationToken: cancellationToken);
+
+            var product =
+                await dataContext.Products.FindAsync([id, cancellationToken], cancellationToken: cancellationToken);
 
             return product;
+        }
+
+        public async Task<List<Product>?> GetBy(Expression<Func<Product, bool>> byIds,
+            CancellationToken ct = default)
+        {
+            ArgumentNullException.ThrowIfNull(byIds);
+
+            return await dataContext.Products.Where(byIds).ToListAsync(ct);
         }
 
         public async Task<List<Product?>> Search(string? term, int page = 1, int pageSize = 1,
@@ -34,8 +45,8 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Repositories
             if (!string.IsNullOrWhiteSpace(term))
             {
                 productsQuery = productsQuery.Where(p =>
-                p!.Name.Contains(term) ||
-                p.Description.Contains(term));
+                    p!.Name.Contains(term) ||
+                    p.Description.Contains(term));
             }
 
             var products = await productsQuery

@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using ServerlessMarketplace.Domain.Customers;
 using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 
@@ -19,7 +21,10 @@ public class CustomerRepository(DataContext context) : ICustomerRepository
         await dataContext.SaveChangesAsync(cancellationToken);
     }
 
-    
+    public async Task<Customer?> GetBy(Expression<Func<Customer, bool>> byId, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(byId);
 
-
+        return await dataContext.Customers.SingleOrDefaultAsync(byId, ct);
+    }
 }

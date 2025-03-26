@@ -1,6 +1,3 @@
-using ServerlessMarketplace.Domain.Customers;
-using ServerlessMarketplace.Domain.Extensions;
-
 namespace ServerlessMarketplace.Domain.Orders;
 
 public static class OrderFactory
