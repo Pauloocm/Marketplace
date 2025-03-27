@@ -1,13 +1,20 @@
-using System.ComponentModel.DataAnnotations;
 using ServerlessMarketplace.Platform.Application.Extensions;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServerlessMarketplace.Platform.Application.Customers.Commands;
 
-public class UpdateWishListCommand : IValidatableObject
+public class UpdateWishListCommand
 {
-    public Guid CustomerId { get; init; }
+    public Guid CustomerId { get; set; }
     public List<int> Items { get; init; } = [];
-    
+
+    public UpdateWishListCommand SetCustomerId(Guid customerId)
+    {
+        CustomerId = customerId;
+
+        return this;
+    }
+
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         if (CustomerId.IsEmpty())

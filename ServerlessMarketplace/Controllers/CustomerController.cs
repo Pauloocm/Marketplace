@@ -9,7 +9,8 @@ namespace ServerlessMarketplace.Controllers
     [Route("[controller]")]
     public class CustomerController(ICustomerAppService customerAppService) : ControllerBase()
     {
-        private readonly ICustomerAppService customerAppService = customerAppService ?? throw new ArgumentNullException(nameof(customerAppService));
+        private readonly ICustomerAppService customerAppService =
+            customerAppService ?? throw new ArgumentNullException(nameof(customerAppService));
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] AddCustomerCommand command, CancellationToken ct = default)
@@ -17,17 +18,29 @@ namespace ServerlessMarketplace.Controllers
             ArgumentNullException.ThrowIfNull(command);
 
             var customerId = await customerAppService.Add(command, ct);
-        
+
             return Ok(customerId);
         }
 
         [HttpGet("{productId:guid}")]
-        public async Task<IActionResult> Order([FromBody] AddOrderCommand command,  CancellationToken ct = default)
+        public async Task<IActionResult> Order([FromBody] AddOrderCommand command, CancellationToken ct = default)
         {
             ArgumentNullException.ThrowIfNull(command);
-        
+
             // var product = await customerAppService.AddOrder(command, ct);
-        
+
+            return Ok();
+        }
+
+        [HttpPut("{customerId:guid}/WishList")]
+        public async Task<IActionResult> UpdateWishList([FromRoute] Guid customerId,
+            [FromBody] UpdateWishListCommand command,
+            CancellationToken ct = default)
+        {
+            ArgumentNullException.ThrowIfNull(command);
+
+            await customerAppService.UpdateWishList(command.SetCustomerId(customerId), ct);
+
             return Ok();
         }
         //
