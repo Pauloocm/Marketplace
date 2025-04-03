@@ -11,13 +11,14 @@ namespace ServerlessMarketplace.Domain.Products
         public decimal Price { get; set; }
         public int CategoryId { get; private set; }
 
-        private readonly Category category = null!;
+        private Category category = null!;
 
         public Category Category
         {
             get => category;
             set
             {
+                category = value;
                 if (value != null)
                     CategoryId = value.Id;
             }
