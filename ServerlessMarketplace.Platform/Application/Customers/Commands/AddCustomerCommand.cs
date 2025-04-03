@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using ServerlessMarketplace.Platform.Application.Extensions;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServerlessMarketplace.Platform.Application.Customers.Commands;
 
@@ -14,7 +14,7 @@ public class AddCustomerCommand : IValidatableObject
     {
         if (string.IsNullOrWhiteSpace(Name))
             yield return new ValidationResult("Name is required.", [nameof(Name)]);
-        
+
         if (!Email.IsValidEmail())
             yield return new ValidationResult("Email is invalid.", [nameof(Email)]);
 
