@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using ServerlessMarketplace.Domain.Customers;
 using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
+using System.Linq.Expressions;
 
 namespace ServerlessMarketplace.Platform.Infrastructure.Repositories;
 
@@ -25,6 +25,6 @@ public class CustomerRepository(DataContext context) : ICustomerRepository
     {
         ArgumentNullException.ThrowIfNull(byId);
 
-        return await dataContext.Customers.SingleOrDefaultAsync(byId, ct);
+        return await dataContext.Customers.Include("WishList").SingleOrDefaultAsync(byId, ct);
     }
 }

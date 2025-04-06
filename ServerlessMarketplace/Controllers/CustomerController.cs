@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServerlessMarketplace.Domain.Extensions;
 using ServerlessMarketplace.Platform.Application.Customers;
 using ServerlessMarketplace.Platform.Application.Customers.Commands;
 using ServerlessMarketplace.Platform.Application.Orders;
@@ -15,7 +16,7 @@ namespace ServerlessMarketplace.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] AddCustomerCommand command, CancellationToken ct = default)
         {
-            ArgumentNullException.ThrowIfNull(command);
+            command.EnsureIsValid();
 
             var customerId = await customerAppService.Add(command, ct);
 
@@ -27,19 +28,18 @@ namespace ServerlessMarketplace.Controllers
         {
             ArgumentNullException.ThrowIfNull(command);
 
-            // var product = await customerAppService.AddOrder(command, ct);
+            //var product = await customerAppService.AddOrder(command, ct);
 
             return Ok();
         }
 
         [HttpPut("{customerId:guid}/WishList")]
-        public async Task<IActionResult> UpdateWishList([FromRoute] Guid customerId,
-            [FromBody] UpdateWishListCommand command,
+        public async Task<IActionResult> UpdateWishList([FromBody] UpdateWishListCommand command,
             CancellationToken ct = default)
         {
-            ArgumentNullException.ThrowIfNull(command);
+            command.EnsureIsValid();
 
-            await customerAppService.UpdateWishList(command.SetCustomerId(customerId), ct);
+            await customerAppService.UpdateWishList(command, ct);
 
             return Ok();
         }

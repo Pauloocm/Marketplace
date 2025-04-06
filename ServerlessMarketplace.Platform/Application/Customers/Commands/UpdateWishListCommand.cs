@@ -1,23 +1,15 @@
-using ServerlessMarketplace.Platform.Application.Extensions;
+using ServerlessMarketplace.Platform.Application.BaseCommands;
 using System.ComponentModel.DataAnnotations;
 
 namespace ServerlessMarketplace.Platform.Application.Customers.Commands;
 
-public class UpdateWishListCommand
+public class UpdateWishListCommand : CustomerBaseCommand
 {
-    public Guid CustomerId { get; set; }
-    public List<int> Items { get; init; } = [];
+    public List<int> Items { get; init; } = null!;
 
-    public UpdateWishListCommand SetCustomerId(Guid customerId)
+    public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        CustomerId = customerId;
-
-        return this;
-    }
-
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-    {
-        if (CustomerId.IsEmpty())
+        if (CustomerId == Guid.Empty)
             yield return new ValidationResult("The Customer Id is required.", [nameof(CustomerId)]);
 
         if (!Items.Any())
