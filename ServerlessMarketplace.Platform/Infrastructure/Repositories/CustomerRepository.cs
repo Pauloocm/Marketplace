@@ -16,15 +16,15 @@ public class CustomerRepository(DataContext context) : ICustomerRepository
         await dataContext.Customers.AddAsync(customer, ct);
     }
 
-    public async Task Commit(CancellationToken cancellationToken = default)
+    public async Task Commit(CancellationToken ct = default)
     {
-        await dataContext.SaveChangesAsync(cancellationToken);
+        await dataContext.SaveChangesAsync(ct);
     }
 
-    public async Task<Customer?> GetBy(Expression<Func<Customer, bool>> byId, CancellationToken ct = default)
+    public async Task<Customer?> GetBy(Expression<Func<Customer, bool>> byId, string include = null!, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(byId);
 
-        return await dataContext.Customers.Include("WishList").SingleOrDefaultAsync(byId, ct);
+        return await dataContext.Customers.Include(include).SingleOrDefaultAsync(byId, ct);
     }
 }

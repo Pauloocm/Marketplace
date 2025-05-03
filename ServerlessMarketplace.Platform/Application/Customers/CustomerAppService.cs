@@ -4,6 +4,7 @@ using ServerlessMarketplace.Domain.Extensions;
 using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Domain.Products.Exceptions;
 using ServerlessMarketplace.Platform.Application.Customers.Commands;
+using ServerlessMarketplace.Platform.Application.Orders;
 
 namespace ServerlessMarketplace.Platform.Application.Customers;
 
@@ -28,14 +29,25 @@ public class CustomerAppService(ICustomerRepository customerRepo, IProductReposi
         return customer.Id;
     }
 
+    public async Task AddOrder(AddOrderCommand command, CancellationToken ct = default)
+    {
+        command.EnsureIsValid();
+
+        IsCustomerValid(command.CustomerId);
+
+        //var items = await productRepository.
+
+        //var order = OrderFactory.Create(command.CustomerId, command.ProductIds);
+    }
+
     public async Task UpdateWishList(UpdateWishListCommand command, CancellationToken ct = default)
     {
         command.EnsureIsValid();
 
-        var customer = await customerRepository.GetBy(ExpressionTrees.ById(command.CustomerId), ct)
+        var customer = await customerRepository.GetBy(ExpressionTrees.ById(command.CustomerId), ct: ct)
                        ?? throw new CustomerNotFoundException();
-        
-        var wishedProducts = await productRepository.GetBy(ExpressionTrees.ByIds(command.Items), ct)
+
+        var wishedProducts = await productRepository.GetBy(ExpressionTrees.ByIds(command.Items), ct: ct)
                              ?? throw new ProductNotFoundException();
 
         customer.UpdateWishList(wishedProducts);
@@ -43,16 +55,11 @@ public class CustomerAppService(ICustomerRepository customerRepo, IProductReposi
         await customerRepository.Commit(ct);
     }
 
-    // public async Task<Guid> AddOrder(AddOrderCommand command, CancellationToken ct = default)
-    // {
-    //     command.EnsureIsValid();
-    //
-    //     var customer = await customerRepository.GetBy(new GetCustomerByIdSpecification(), ct);
-    //     
-    //     //TODO adicionar validação para verificar se o customer existe
-    //
-    //     var order = new Order(){}
-    //
-    //     return order.Id;
-    // }
+    private bool IsCustomerValid(Guid customerId)
+    {
+        _ = customerRepository.GetBy(ExpressionTrees.ById(customerId), ct: CancellationToken.None)
+            ?? throw new CustomerNotFoundException();
+
+        return true;
+    }
 }

@@ -24,8 +24,6 @@ public class Order
 
     public void AddOrderItem(OrderItem item)
     {
-        ArgumentNullException.ThrowIfNull(item);
-
         item.EnsureIsValid();
 
         Products ??= [];
