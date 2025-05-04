@@ -60,7 +60,5 @@ public class CustomerAppService(ICustomerRepository customerRepo, IProductReposi
     {
         _ = customerRepository.GetBy(ExpressionTrees.ById(customerId), ct: CancellationToken.None)
             ?? throw new CustomerNotFoundException();
-
-        return true;
     }
 }
