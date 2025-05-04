@@ -1,3 +1,4 @@
+
 using ServerlessMarketplace.Domain.Customers;
 using ServerlessMarketplace.Domain.Customers.Exceptions;
 using ServerlessMarketplace.Domain.Extensions;
@@ -11,10 +12,10 @@ namespace ServerlessMarketplace.Platform.Application.Customers;
 public class CustomerAppService(ICustomerRepository customerRepo, IProductRepository productRepo) : ICustomerAppService
 {
     private readonly ICustomerRepository customerRepository = customerRepo
-                                                              ?? throw new ArgumentNullException(nameof(customerRepo));
+        ?? throw new ArgumentNullException(nameof(customerRepo));
 
     private readonly IProductRepository productRepository = productRepo
-                                                            ?? throw new ArgumentNullException(nameof(productRepo));
+        ?? throw new ArgumentNullException(nameof(productRepo));
 
     public async Task<Guid> Add(AddCustomerCommand command, CancellationToken ct = default)
     {
@@ -55,7 +56,7 @@ public class CustomerAppService(ICustomerRepository customerRepo, IProductReposi
         await customerRepository.Commit(ct);
     }
 
-    private bool IsCustomerValid(Guid customerId)
+    private void IsCustomerValid(Guid customerId)
     {
         _ = customerRepository.GetBy(ExpressionTrees.ById(customerId), ct: CancellationToken.None)
             ?? throw new CustomerNotFoundException();

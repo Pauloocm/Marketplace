@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ServerlessMarketplace.Domain.Extensions;
+namespace ServerlessMarketplace.Resources.Extensions;
 
-public static class DomainExtensions
+public static class ValidateExtension
 {
     public static void EnsureIsValid<T>(this T obj) where T : class
     {

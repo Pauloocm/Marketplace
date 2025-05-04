@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ServerlessMarketplace.Domain.Categorys;
 using ServerlessMarketplace.Domain.Extensions;
+using ServerlessMarketplace.Resources.Extensions;
 
 namespace ServerlessMarketplace.Domain.Products
 {

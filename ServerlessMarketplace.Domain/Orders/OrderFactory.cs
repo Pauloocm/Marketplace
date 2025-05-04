@@ -1,4 +1,5 @@
 using ServerlessMarketplace.Domain.Extensions;
+using ServerlessMarketplace.Resources.Extensions;
 
 namespace ServerlessMarketplace.Domain.Orders;
 
