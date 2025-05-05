@@ -1,6 +1,7 @@
 using ServerlessMarketplace.Domain.Addresses;
 using ServerlessMarketplace.Domain.Customers;
 using ServerlessMarketplace.Domain.Extensions;
+using ServerlessMarketplace.Resources.Extensions;
 
 namespace ServerlessMarketplace.Domain.Orders;
 
@@ -24,8 +25,6 @@ public class Order
 
     public void AddOrderItem(OrderItem item)
     {
-        ArgumentNullException.ThrowIfNull(item);
-
         item.EnsureIsValid();
 
         Products ??= [];

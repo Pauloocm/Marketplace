@@ -3,6 +3,7 @@ using ServerlessMarketplace.Domain.Extensions;
 using ServerlessMarketplace.Platform.Application.Customers;
 using ServerlessMarketplace.Platform.Application.Customers.Commands;
 using ServerlessMarketplace.Platform.Application.Orders;
+using ServerlessMarketplace.Resources.Extensions;
 
 namespace ServerlessMarketplace.Controllers
 {
@@ -28,7 +29,7 @@ namespace ServerlessMarketplace.Controllers
         {
             ArgumentNullException.ThrowIfNull(command);
 
-            //var product = await customerAppService.AddOrder(command, ct);
+            await customerAppService.AddOrder(command, ct);
 
             return Ok();
         }

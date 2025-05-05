@@ -2,6 +2,7 @@ using ServerlessMarketplace.Domain.Addresses;
 using ServerlessMarketplace.Domain.Extensions;
 using ServerlessMarketplace.Domain.Orders;
 using ServerlessMarketplace.Domain.Products;
+using ServerlessMarketplace.Resources.Extensions;
 
 namespace ServerlessMarketplace.Domain.Customers;
 
