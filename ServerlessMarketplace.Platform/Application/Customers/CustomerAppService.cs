@@ -6,6 +6,7 @@ using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Domain.Products.Exceptions;
 using ServerlessMarketplace.Platform.Application.Customers.Commands;
 using ServerlessMarketplace.Platform.Application.Orders;
+using ServerlessMarketplace.Resources.Extensions;
 
 namespace ServerlessMarketplace.Platform.Application.Customers;
 

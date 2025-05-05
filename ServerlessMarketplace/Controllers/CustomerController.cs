@@ -29,7 +29,7 @@ namespace ServerlessMarketplace.Controllers
         {
             ArgumentNullException.ThrowIfNull(command);
 
-            var product = await customerAppService.AddOrder(command, ct);
+            await customerAppService.AddOrder(command, ct);
 
             return Ok();
         }
