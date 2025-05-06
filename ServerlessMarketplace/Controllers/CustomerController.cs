@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServerlessMarketplace.Domain.Extensions;
 using ServerlessMarketplace.Platform.Application.Customers;
 using ServerlessMarketplace.Platform.Application.Customers.Commands;
+using ServerlessMarketplace.Platform.Application.Orders;
+using ServerlessMarketplace.Resources.Extensions;
 
 namespace ServerlessMarketplace.Controllers
 {
@@ -8,27 +11,39 @@ namespace ServerlessMarketplace.Controllers
     [Route("[controller]")]
     public class CustomerController(ICustomerAppService customerAppService) : ControllerBase()
     {
-        private readonly ICustomerAppService customerAppService = customerAppService ?? throw new ArgumentNullException(nameof(customerAppService));
+        private readonly ICustomerAppService customerAppService =
+            customerAppService ?? throw new ArgumentNullException(nameof(customerAppService));
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] AddCustomerCommand command, CancellationToken ct = default)
         {
-            ArgumentNullException.ThrowIfNull(command);
+            command.EnsureIsValid();
 
             var customerId = await customerAppService.Add(command, ct);
-        
+
             return Ok(customerId);
         }
 
-        // [HttpGet("{productId:guid}")]
-        // public async Task<IActionResult> Get([FromRoute] Guid productId, [FromRoute] GetProductFilter filter, CancellationToken cancellationToken = default)
-        // {
-        //     ArgumentNullException.ThrowIfNull(filter);
-        //
-        //     var product = await marketplaceAppService.Get(filter.SetId(productId), cancellationToken);
-        //
-        //     return Ok(product);
-        // }
+        [HttpGet("{productId:guid}")]
+        public async Task<IActionResult> Order([FromBody] AddOrderCommand command, CancellationToken ct = default)
+        {
+            ArgumentNullException.ThrowIfNull(command);
+
+            await customerAppService.AddOrder(command, ct);
+
+            return Ok();
+        }
+
+        [HttpPut("{customerId:guid}/WishList")]
+        public async Task<IActionResult> UpdateWishList([FromBody] UpdateWishListCommand command,
+            CancellationToken ct = default)
+        {
+            command.EnsureIsValid();
+
+            await customerAppService.UpdateWishList(command, ct);
+
+            return Ok();
+        }
         //
         // [HttpGet("/Search")]
         // public async Task<IActionResult> Search([FromQuery] SearchProductsFilter filter, CancellationToken cancellationToken = default)

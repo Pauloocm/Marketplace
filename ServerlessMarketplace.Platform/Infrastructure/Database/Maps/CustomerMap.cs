@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ServerlessMarketplace.Domain.Customers;
+using ServerlessMarketplace.Domain.Products;
 
 namespace ServerlessMarketplace.Platform.Infrastructure.Database.Maps
 {
@@ -18,6 +19,14 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Database.Maps
             builder.HasMany(c => c.OrdersHistory)
                 .WithOne(p => p.Customer)
                 .HasForeignKey(p => p.CustomerId);
+
+            builder.HasMany(c => c.WishList)
+                .WithMany()
+                .UsingEntity<Dictionary<string, object>>(
+                    "CustomerWishList",
+                    j => j.HasOne<Product>().WithMany().HasForeignKey("ProductId"),
+                    j => j.HasOne<Customer>().WithMany().HasForeignKey("CustomerId")
+                );
         }
     }
 }
