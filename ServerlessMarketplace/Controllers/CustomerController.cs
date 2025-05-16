@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServerlessMarketplace.Domain.Extensions;
 using ServerlessMarketplace.Platform.Application.Customers;
 using ServerlessMarketplace.Platform.Application.Customers.Commands;
 using ServerlessMarketplace.Platform.Application.Orders;
@@ -44,6 +43,18 @@ namespace ServerlessMarketplace.Controllers
 
             return Ok();
         }
+
+        [HttpPut("{customerId:guid}/Address")]
+        public async Task<IActionResult> UpdateAddress([FromBody] UpdateAddressCommand command,
+            CancellationToken ct = default)
+        {
+            command.EnsureIsValid();
+
+            await customerAppService.UpdateAddress(command, ct);
+
+            return Ok();
+        }
+
         //
         // [HttpGet("/Search")]
         // public async Task<IActionResult> Search([FromQuery] SearchProductsFilter filter, CancellationToken cancellationToken = default)

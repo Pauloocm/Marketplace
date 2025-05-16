@@ -1,5 +1,4 @@
 using ServerlessMarketplace.Domain.Addresses;
-using ServerlessMarketplace.Domain.Extensions;
 using ServerlessMarketplace.Domain.Orders;
 using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Resources.Extensions;
@@ -15,6 +14,13 @@ public class Customer
     public Address? Address { get; set; }
     public List<Order>? OrdersHistory { get; private set; }
     public List<Product>? WishList { get; private set; }
+
+    public void UpdateAddress(Address address)
+    {
+        address.EnsureIsValid();
+
+        Address = address;
+    }
 
     public void UpdateOrderHistory(Order order)
     {

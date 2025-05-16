@@ -1,4 +1,5 @@
 
+using ServerlessMarketplace.Domain.Addresses;
 using ServerlessMarketplace.Domain.Customers;
 using ServerlessMarketplace.Domain.Customers.Exceptions;
 using ServerlessMarketplace.Domain.Extensions;
@@ -35,18 +36,32 @@ public class CustomerAppService(ICustomerRepository customerRepo, IProductReposi
     {
         command.EnsureIsValid();
 
-        IsCustomerValid(command.CustomerId);
+        var customer = await IsCustomerValid(command.CustomerId);
 
         //var items = await productRepository.
 
         //var order = OrderFactory.Create(command.CustomerId, command.ProductIds);
     }
 
+    public async Task UpdateAddress(UpdateAddressCommand command, CancellationToken ct = default)
+    {
+        command.EnsureIsValid();
+
+        var customer = await IsCustomerValid(command.CustomerId, "Address");
+
+        var address = AddressFactory.Create(command.Country, command.State, command.City,
+            command.ZipCode, command.Street, command.Number, command.Complement);
+
+        customer.UpdateAddress(address);
+
+        await customerRepository.Commit(ct);
+    }
+
     public async Task UpdateWishList(UpdateWishListCommand command, CancellationToken ct = default)
     {
         command.EnsureIsValid();
 
-        var customer = await customerRepository.GetBy(ExpressionTrees.ById(command.CustomerId), ct: ct)
+        var customer = await customerRepository.GetBy(command.CustomerId, "WishList", ct)
                        ?? throw new CustomerNotFoundException();
 
         var wishedProducts = await productRepository.GetBy(ExpressionTrees.ByIds(command.Items), ct: ct)
@@ -57,9 +72,9 @@ public class CustomerAppService(ICustomerRepository customerRepo, IProductReposi
         await customerRepository.Commit(ct);
     }
 
-    private void IsCustomerValid(Guid customerId)
+    private async Task<Customer> IsCustomerValid(Guid customerId, string? include = null!)
     {
-        _ = customerRepository.GetBy(ExpressionTrees.ById(customerId), ct: CancellationToken.None)
+        return await customerRepository.GetBy(customerId, include, CancellationToken.None)
             ?? throw new CustomerNotFoundException();
     }
 }
