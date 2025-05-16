@@ -2,7 +2,7 @@ using ServerlessMarketplace.Domain.Customers;
 
 namespace ServerlessMarketplace.Domain.Addresses;
 
-public class Address
+public class Address : BaseEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public Guid CustomerId { get; set; }

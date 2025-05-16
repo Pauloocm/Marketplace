@@ -5,7 +5,7 @@ using ServerlessMarketplace.Resources.Extensions;
 
 namespace ServerlessMarketplace.Domain.Customers;
 
-public class Customer
+public class Customer : BaseEntity
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
     public string Name { get; set; } = null!;
