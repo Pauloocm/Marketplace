@@ -20,7 +20,7 @@ namespace ServerlessMarketplace.Platform.Application.Products
 
             return product.Id;
         }
-        public async Task<ProductRecordDto?> Get(GetProductFilter filter, CancellationToken cancellationToken = default)
+        public async Task<ProductDetailDto?> Get(GetProductFilter filter, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(filter);
 
@@ -40,7 +40,7 @@ namespace ServerlessMarketplace.Platform.Application.Products
             await productRepository.Commit(cancellationToken);
         }
 
-        public async Task<List<ProductDto?>?> Search(SearchProductsFilter filter, CancellationToken cancellationToken = default)
+        public async Task<List<ProductCardDto?>?> Search(SearchProductsFilter filter, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(filter);
 
