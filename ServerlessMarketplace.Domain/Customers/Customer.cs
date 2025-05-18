@@ -1,12 +1,11 @@
 using ServerlessMarketplace.Domain.Addresses;
-using ServerlessMarketplace.Domain.Extensions;
 using ServerlessMarketplace.Domain.Orders;
 using ServerlessMarketplace.Domain.Products;
 using ServerlessMarketplace.Resources.Extensions;
 
 namespace ServerlessMarketplace.Domain.Customers;
 
-public class Customer
+public class Customer : BaseEntity
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
     public string Name { get; set; } = null!;
@@ -15,6 +14,13 @@ public class Customer
     public Address? Address { get; set; }
     public List<Order>? OrdersHistory { get; private set; }
     public List<Product>? WishList { get; private set; }
+
+    public void UpdateAddress(Address address)
+    {
+        address.EnsureIsValid();
+
+        Address = address;
+    }
 
     public void UpdateOrderHistory(Order order)
     {

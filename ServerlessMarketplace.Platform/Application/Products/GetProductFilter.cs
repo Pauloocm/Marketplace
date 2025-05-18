@@ -2,9 +2,9 @@
 {
     public class GetProductFilter
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
-        public GetProductFilter SetId(Guid id)
+        public GetProductFilter SetId(int id)
         {
             Id = id;
             return this;

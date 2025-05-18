@@ -5,26 +5,26 @@ namespace ServerlessMarketplace.Platform.Dtos
 {
     public static class DtoExtensions
     {
-        public static ProductDto? ToDto(this Product? product)
+        public static ProductCardDto? ToDto(this Product? product)
         {
             if (product is null) return null;
 
-            var dto = new ProductDto()
+            var dto = new ProductCardDto()
             {
-                Name = product.Name,
-                Description = product.Description,
+
+                Id = product.Id,
+                Title = product.Name,
                 Price = product.Price,
-                Category = Category.GetById(product.CategoryId).ToDto(),
             };
 
             return dto;
         }
 
-        public static ProductRecordDto? ToRecordDto(this Product? product)
+        public static ProductDetailDto? ToRecordDto(this Product? product)
         {
             if (product is null) return null;
 
-            return new ProductRecordDto(product.Name, product.Description, product.Price, Category.GetById(product.CategoryId).ToDto());
+            return new ProductDetailDto(product.Id, product.Name, product.Description, product.Price, "", Category.GetById(product.CategoryId).ToDto());
         }
 
         public static CategoryDto ToDto(this Category? category)
@@ -40,7 +40,7 @@ namespace ServerlessMarketplace.Platform.Dtos
             return dto;
         }
 
-        public static List<ProductDto?>? ToDto(this List<Product?>? productS)
+        public static List<ProductCardDto?>? ToDto(this List<Product?>? productS)
         {
             return productS?.Select(ToDto).ToList();
         }
