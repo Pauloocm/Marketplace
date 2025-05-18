@@ -7,24 +7,26 @@ namespace ServerlessMarketplace.Controllers
     [Route("[controller]")]
     public class ProductController(IProductAppService appService) : ControllerBase()
     {
-        private readonly IProductAppService _productAppService = appService ?? throw new ArgumentNullException(nameof(appService));
+        private readonly IProductAppService productAppService = appService ?? throw new ArgumentNullException(nameof(appService));
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] AddProductCommand command, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(command);
 
-            var productId = await _productAppService.Add(command, cancellationToken);
+            var productId = await productAppService.Add(command, cancellationToken);
 
             return Ok(productId);
         }
 
-        [HttpGet("{productId:guid}")]
-        public async Task<IActionResult> Get([FromRoute] Guid productId, [FromRoute] GetProductFilter filter, CancellationToken cancellationToken = default)
+        [HttpGet("{productId:int}/Detail")]
+        public async Task<IActionResult> Detail([FromRoute] int productId, CancellationToken cancellationToken = default)
         {
-            ArgumentNullException.ThrowIfNull(filter);
+            //ArgumentNullException.ThrowIfNull(filter);
 
-            var product = await _productAppService.Get(filter.SetId(productId), cancellationToken);
+            var filter = new GetProductFilter() { Id = productId };
+
+            var product = await productAppService.Get(filter.SetId(productId), cancellationToken);
 
             return Ok(product);
         }
@@ -34,27 +36,27 @@ namespace ServerlessMarketplace.Controllers
         {
             ArgumentNullException.ThrowIfNull(filter);
 
-            var products = await _productAppService.Search(filter, cancellationToken);
+            var products = await productAppService.Search(filter, cancellationToken);
 
             return Ok(products);
         }
 
         [HttpPut("{productId:guid}")]
-        public async Task<IActionResult> Update([FromRoute] Guid productId, [FromBody] UpdateProductCommand command, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Update([FromRoute] int productId, [FromBody] UpdateProductCommand command, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(command);
 
-            await _productAppService.Update(command.SetId(productId), cancellationToken);
+            await productAppService.Update(command.SetId(productId), cancellationToken);
 
             return Ok();
         }
 
         [HttpDelete("{productId:guid}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid productId, [FromRoute] GetProductFilter filter, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Delete([FromRoute] int productId, [FromRoute] GetProductFilter filter, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(filter);
 
-            await _productAppService.Delete(filter.SetId(productId), cancellationToken);
+            await productAppService.Delete(filter.SetId(productId), cancellationToken);
 
             return Ok();
         }
