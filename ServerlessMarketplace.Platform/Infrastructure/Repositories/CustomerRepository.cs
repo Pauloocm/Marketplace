@@ -24,18 +24,13 @@ public class CustomerRepository(DataContext context) : ICustomerRepository
     {
         if (costumerId == Guid.Empty) throw new ArgumentNullException(nameof(costumerId));
 
-        if (includes is not null)
-        {
-            return await dataContext.Customers
-            .AsSplitQuery()
+        var query = await dataContext.Customers.AsSplitQuery()
             .Include(includes)
-            .SingleOrDefaultAsync(c => c.Id == costumerId, cancellationToken: ct);
-        }
-        else
-        {
-            return await dataContext.Customers
-                .AsSplitQuery()
-                .SingleOrDefaultAsync(c => c.Id == costumerId, cancellationToken: ct);
-        }
+            .FirstOrDefaultAsync(customer => customer.Id == costumerId, ct);
+
+        //if (!string.IsNullOrWhiteSpace(includes))
+        //    query.Include(includes);
+
+        return query;
     }
 }

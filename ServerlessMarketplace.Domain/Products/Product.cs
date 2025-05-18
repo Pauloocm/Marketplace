@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ServerlessMarketplace.Domain.Categorys;
+﻿using ServerlessMarketplace.Domain.Categorys;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServerlessMarketplace.Domain.Products
 {
-    public class Product : IValidatableObject
+    public class Product : BaseEntity, IValidatableObject
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
