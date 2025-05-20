@@ -12,10 +12,6 @@ using ServerlessMarketplace.Platform.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,7 +19,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme, options =>
 {
-    options.BearerTokenExpiration = TimeSpan.FromSeconds(20);
+    options.BearerTokenExpiration = TimeSpan.FromMinutes(20);
 });
 
 builder.Services.AddIdentityCore<User>()
@@ -32,7 +28,7 @@ builder.Services.AddIdentityCore<User>()
 
 builder.Services.AddControllers(options =>
 {
-    options.ModelBinderProviders.Insert(0, new CustomerIdRouteModelBinderProvider()); // Insert at the beginning to prioritize
+    options.ModelBinderProviders.Insert(0, new CustomerIdRouteModelBinderProvider());
 });
 
 
@@ -53,7 +49,6 @@ using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsol
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
