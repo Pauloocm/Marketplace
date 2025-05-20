@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ServerlessMarketplace.CustomBinder;
 using ServerlessMarketplace.Domain.Customers;
 using ServerlessMarketplace.Domain.Products;
+using ServerlessMarketplace.Domain.User;
 using ServerlessMarketplace.ExceptionHandler;
 using ServerlessMarketplace.Platform.Application.Customers;
 using ServerlessMarketplace.Platform.Application.Products;
@@ -12,14 +14,28 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+
+
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme, options =>
+{
+    options.BearerTokenExpiration = TimeSpan.FromSeconds(20);
+});
+
+builder.Services.AddIdentityCore<User>()
+    .AddEntityFrameworkStores<DataContext>()
+    .AddApiEndpoints();
+
 builder.Services.AddControllers(options =>
 {
     options.ModelBinderProviders.Insert(0, new CustomerIdRouteModelBinderProvider()); // Insert at the beginning to prioritize
 });
 
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IProductAppService, ProductAppService>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<ICustomerAppService, CustomerAppService>();
@@ -58,5 +74,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapIdentityApi<User>();
 
 app.Run();
