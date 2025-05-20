@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ServerlessMarketplace.CustomBinder;
 using ServerlessMarketplace.Domain.Customers;
 using ServerlessMarketplace.Domain.Products;
+using ServerlessMarketplace.Domain.User;
 using ServerlessMarketplace.ExceptionHandler;
 using ServerlessMarketplace.Platform.Application.Customers;
 using ServerlessMarketplace.Platform.Application.Products;
@@ -10,16 +12,26 @@ using ServerlessMarketplace.Platform.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers(options =>
-{
-    options.ModelBinderProviders.Insert(0, new CustomerIdRouteModelBinderProvider()); // Insert at the beginning to prioritize
-});
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme, options =>
+{
+    options.BearerTokenExpiration = TimeSpan.FromMinutes(20);
+});
+
+builder.Services.AddIdentityCore<User>()
+    .AddEntityFrameworkStores<DataContext>()
+    .AddApiEndpoints();
+
+builder.Services.AddControllers(options =>
+{
+    options.ModelBinderProviders.Insert(0, new CustomerIdRouteModelBinderProvider());
+});
+
+
 builder.Services.AddTransient<IProductAppService, ProductAppService>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<ICustomerAppService, CustomerAppService>();
@@ -37,7 +49,6 @@ using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsol
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -58,5 +69,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapIdentityApi<User>();
 
 app.Run();

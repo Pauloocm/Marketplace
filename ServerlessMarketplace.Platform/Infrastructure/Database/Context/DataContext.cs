@@ -1,16 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ServerlessMarketplace.Domain.Customers;
 using ServerlessMarketplace.Domain.Orders;
 using ServerlessMarketplace.Domain.Products;
-using ServerlessMarketplace.Platform.Infrastructure.Database.Maps;
+using ServerlessMarketplace.Domain.User;
 
 namespace ServerlessMarketplace.Platform.Infrastructure.Database.Context
 {
-    public class DataContext(DbContextOptions options) : DbContext(options)
+    public class DataContext(DbContextOptions<DataContext> options) : IdentityDbContext<User, IdentityRole<Guid>, Guid>(options)
     {
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
+            builder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
+            base.OnModelCreating(builder);
         }
 
         public DbSet<Product> Products { get; set; }
