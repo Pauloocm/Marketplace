@@ -16,6 +16,11 @@ namespace ServerlessMarketplace.Platform.Infrastructure.Database.Maps
             builder.Property(p => p.Age).IsRequired();
             builder.Property(p => p.Email).HasMaxLength(150).IsRequired();
 
+            builder.HasOne(c => c.Owner)
+                .WithOne()
+                .HasForeignKey<Customer>(c => c.OwnerId)
+                .IsRequired(false);
+
             builder.HasMany(c => c.OrdersHistory)
                 .WithOne(p => p.Customer)
                 .HasForeignKey(p => p.CustomerId);

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServerlessMarketplace.Platform.Application.Customers;
 using ServerlessMarketplace.Platform.Application.Customers.Commands;
-using ServerlessMarketplace.Platform.Application.Orders;
 using ServerlessMarketplace.Resources.Extensions;
 
 namespace ServerlessMarketplace.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CustomerController(ICustomerAppService customerAppService) : ControllerBase()
@@ -14,24 +15,24 @@ namespace ServerlessMarketplace.Controllers
             customerAppService ?? throw new ArgumentNullException(nameof(customerAppService));
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] AddCustomerCommand command, CancellationToken ct = default)
+        public async Task<IActionResult> Update([FromBody] CreateOrUpdateCustomerCommand command, CancellationToken ct = default)
         {
             command.EnsureIsValid();
 
-            var customerId = await customerAppService.Add(command, ct);
+            var customerId = await customerAppService.CreateOrUpdate(command, ct);
 
             return Ok(customerId);
         }
 
-        [HttpGet("{productId:guid}")]
-        public async Task<IActionResult> Order([FromBody] AddOrderCommand command, CancellationToken ct = default)
-        {
-            ArgumentNullException.ThrowIfNull(command);
+        //[HttpGet("{productId:guid}")]
+        //public async Task<IActionResult> Order([FromBody] AddOrderCommand command, CancellationToken ct = default)
+        //{
+        //    ArgumentNullException.ThrowIfNull(command);
 
-            await customerAppService.AddOrder(command, ct);
+        //    await customerAppService.AddOrder(command, ct);
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
         [HttpPut("{customerId:guid}/WishList")]
         public async Task<IActionResult> UpdateWishList([FromBody] UpdateWishListCommand command,

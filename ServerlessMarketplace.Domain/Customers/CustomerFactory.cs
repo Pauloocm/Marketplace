@@ -1,20 +1,20 @@
-using ServerlessMarketplace.Domain.Extensions;
 using ServerlessMarketplace.Resources.Extensions;
 
 namespace ServerlessMarketplace.Domain.Customers;
 
 public static class CustomerFactory
 {
-    public static Customer Create(string email, string name, int age)
+    public static Customer Create(User.User owner, string firstName, string lastName, int age)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(email);
-        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        ArgumentNullException.ThrowIfNull(owner);
+        ArgumentException.ThrowIfNullOrWhiteSpace(firstName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(lastName);
         if (age < 18) throw new ArgumentException("Age must be at least 18");
 
         var customer = new Customer()
         {
-            Email = email,
-            Name = name,
+            Owner = owner,
+            Name = $"{firstName} {lastName}",
             Age = age
         };
 

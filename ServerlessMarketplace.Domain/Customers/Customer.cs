@@ -8,6 +8,8 @@ namespace ServerlessMarketplace.Domain.Customers;
 public class Customer : BaseEntity
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
+    public User.User Owner { get; set; } = null!;
+    public Guid OwnerId { get; set; }
     public string Name { get; set; } = null!;
     public int Age { get; set; }
     public string Email { get; set; } = null!;
@@ -20,6 +22,16 @@ public class Customer : BaseEntity
         address.EnsureIsValid();
 
         Address = address;
+    }
+
+    public void UpdateBasicInformations(string firstName, string lastName, int age)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(firstName);
+        ArgumentException.ThrowIfNullOrEmpty(lastName);
+        if (age < 0) throw new ArgumentNullException("Age must be greater than 0.");
+
+        Name = $"{firstName} {lastName}";
+        Age = age;
     }
 
     public void UpdateOrderHistory(Order order)
