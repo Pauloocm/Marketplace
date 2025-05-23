@@ -34,11 +34,12 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddTransient<IProductAppService, ProductAppService>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICustomerAppService, CustomerAppService>();
 builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
 
 builder.Services.AddDbContext<DataContext>(
-    options => options.UseNpgsql($"Server=localhost:5433;Database=Product;Username=postgres;Password=root",
+    options => options.UseNpgsql($"Server=localhost:5433;Database=Product;Username=postgres;Password=root;Include Error Detail=true",
         b => b.MigrationsAssembly("ServerlessMarketplace.Migrations")));
 
 

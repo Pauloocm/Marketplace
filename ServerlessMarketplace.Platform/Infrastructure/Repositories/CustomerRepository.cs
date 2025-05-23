@@ -20,17 +20,21 @@ public class CustomerRepository(DataContext context) : ICustomerRepository
     }
 
 
-    public async Task<Customer?> GetBy(Guid costumerId, string? includes = null!, CancellationToken ct = default)
+    public async Task<Customer?> GetBy(Guid customerId, string? includes = null!, CancellationToken ct = default)
     {
-        if (costumerId == Guid.Empty) throw new ArgumentNullException(nameof(costumerId));
+        if (customerId == Guid.Empty) throw new ArgumentNullException(nameof(customerId));
 
-        var query = await dataContext.Customers.AsSplitQuery()
+        var customer = await dataContext.Customers.AsSplitQuery()
             .Include(includes)
-            .FirstOrDefaultAsync(customer => customer.Id == costumerId, ct);
+            .FirstOrDefaultAsync(customer => customer.Id == customerId, ct);
 
-        //if (!string.IsNullOrWhiteSpace(includes))
-        //    query.Include(includes);
+        return customer;
+    }
 
-        return query;
+    public async Task<Customer?> GetByOwnerId(Guid userId, CancellationToken ct = default)
+    {
+        if (userId == Guid.Empty) return null;
+
+        return await dataContext.Customers.FirstOrDefaultAsync(customer => customer.OwnerId == userId, ct);
     }
 }

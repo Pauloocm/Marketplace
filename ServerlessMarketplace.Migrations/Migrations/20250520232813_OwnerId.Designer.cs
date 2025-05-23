@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
@@ -11,9 +12,11 @@ using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 namespace ServerlessMarketplace.Migrations.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250520232813_OwnerId")]
+    partial class OwnerId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,11 +235,16 @@ namespace ServerlessMarketplace.Migrations.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Birthday")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -513,7 +521,9 @@ namespace ServerlessMarketplace.Migrations.Migrations
                 {
                     b.HasOne("ServerlessMarketplace.Domain.User.User", "Owner")
                         .WithOne()
-                        .HasForeignKey("ServerlessMarketplace.Domain.Customers.Customer", "OwnerId");
+                        .HasForeignKey("ServerlessMarketplace.Domain.Customers.Customer", "OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Owner");
                 });
