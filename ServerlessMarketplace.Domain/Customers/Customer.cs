@@ -11,8 +11,7 @@ public class Customer : BaseEntity
     public User.User Owner { get; set; } = null!;
     public Guid OwnerId { get; set; }
     public string Name { get; set; } = null!;
-    public int Age { get; set; }
-    public string Email { get; set; } = null!;
+    public DateTime? Birthday { get; set; }
     public Address? Address { get; set; }
     public List<Order>? OrdersHistory { get; private set; }
     public List<Product>? WishList { get; private set; }
@@ -24,14 +23,13 @@ public class Customer : BaseEntity
         Address = address;
     }
 
-    public void UpdateBasicInformations(string firstName, string lastName, int age)
+    public void UpdateBasicInformations(string firstName, string lastName, DateTime? birthDay)
     {
         ArgumentException.ThrowIfNullOrEmpty(firstName);
         ArgumentException.ThrowIfNullOrEmpty(lastName);
-        if (age < 0) throw new ArgumentNullException("Age must be greater than 0.");
 
         Name = $"{firstName} {lastName}";
-        Age = age;
+        Birthday = birthDay;
     }
 
     public void UpdateOrderHistory(Order order)

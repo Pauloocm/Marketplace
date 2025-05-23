@@ -7,9 +7,7 @@ public class CreateOrUpdateCustomerCommand : CustomerBaseCommand
 {
     public string FirstName { get; init; } = null!;
     public string LastName { get; init; } = null!;
-    public DateTime? BirthDay { get; init; }
-    public int Age { get; set; }
-
+    public DateTime? Birthday { get; init; }
 
     public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
@@ -18,8 +16,5 @@ public class CreateOrUpdateCustomerCommand : CustomerBaseCommand
 
         if (string.IsNullOrWhiteSpace(LastName))
             yield return new ValidationResult("Last name is required.", [nameof(LastName)]);
-
-        if (Age < 18)
-            yield return new ValidationResult("Age must be at least 18.", [nameof(Age)]);
     }
 }

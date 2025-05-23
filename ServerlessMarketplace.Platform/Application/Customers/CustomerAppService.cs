@@ -30,13 +30,13 @@ public class CustomerAppService(ICustomerRepository customerRepo, IUserRepositor
 
         if (customer is null)
         {
-            customer = CustomerFactory.Create(owner, command.FirstName, command.LastName, command.Age);
+            customer = CustomerFactory.Create(owner, command.FirstName, command.LastName, command.Birthday);
 
             await customerRepository.Add(customer, ct);
         }
         else
         {
-            customer.UpdateBasicInformations(command.FirstName, command.LastName, command.Age);
+            customer.UpdateBasicInformations(command.FirstName, command.LastName, command.Birthday);
         }
 
         await customerRepository.Commit(ct);
