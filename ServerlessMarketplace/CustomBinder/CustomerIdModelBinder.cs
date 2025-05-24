@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ServerlessMarketplace.Platform.Application.BaseCommands;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
@@ -7,7 +8,7 @@ namespace ServerlessMarketplace.CustomBinder
 {
     public class CustomerIdRouteModelBinder : IModelBinder
     {
-        private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
+        private static readonly JsonSerializerOptions JsonOptions = new()
         {
             PropertyNameCaseInsensitive = true
         };
@@ -44,6 +45,12 @@ namespace ServerlessMarketplace.CustomBinder
                     Guid.TryParse(customerIdValue?.ToString(), out var customerId))
                 {
                     model.CustomerId = customerId;
+                }
+
+                if (Guid.TryParse(bindingContext.HttpContext.User.Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value, out var userId))
+                {
+                    model.UserId = userId;
                 }
 
                 bindingContext.Result = ModelBindingResult.Success(model);

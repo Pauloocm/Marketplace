@@ -8,9 +8,10 @@ namespace ServerlessMarketplace.Domain.Customers;
 public class Customer : BaseEntity
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
+    public User.User Owner { get; set; } = null!;
+    public Guid OwnerId { get; set; }
     public string Name { get; set; } = null!;
-    public int Age { get; set; }
-    public string Email { get; set; } = null!;
+    public DateTime? Birthday { get; set; }
     public Address? Address { get; set; }
     public List<Order>? OrdersHistory { get; private set; }
     public List<Product>? WishList { get; private set; }
@@ -20,6 +21,15 @@ public class Customer : BaseEntity
         address.EnsureIsValid();
 
         Address = address;
+    }
+
+    public void UpdateBasicInformations(string firstName, string lastName, DateTime? birthDay)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(firstName);
+        ArgumentException.ThrowIfNullOrEmpty(lastName);
+
+        Name = $"{firstName} {lastName}";
+        Birthday = birthDay;
     }
 
     public void UpdateOrderHistory(Order order)
