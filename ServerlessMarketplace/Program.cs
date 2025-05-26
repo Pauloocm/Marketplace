@@ -7,6 +7,7 @@ using ServerlessMarketplace.Domain.User;
 using ServerlessMarketplace.ExceptionHandler;
 using ServerlessMarketplace.Platform.Application.Customers;
 using ServerlessMarketplace.Platform.Application.Products;
+using ServerlessMarketplace.Platform.Application.Users;
 using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 using ServerlessMarketplace.Platform.Infrastructure.Repositories;
 
@@ -29,6 +30,7 @@ builder.Services.AddIdentityCore<User>()
 builder.Services.AddControllers(options =>
 {
     options.ModelBinderProviders.Insert(0, new CustomerIdRouteModelBinderProvider());
+    options.ModelBinderProviders.Insert(0, new UserIdRouteModelBinderProvider());
 });
 
 
@@ -37,6 +39,7 @@ builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICustomerAppService, CustomerAppService>();
 builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
+builder.Services.AddTransient<IUserAppService, UserAppService>();
 
 builder.Services.AddDbContext<DataContext>(
     options => options.UseNpgsql($"Server=localhost:5433;Database=Product;Username=postgres;Password=root;Include Error Detail=true",

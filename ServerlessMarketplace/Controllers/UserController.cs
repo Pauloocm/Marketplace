@@ -1,30 +1,26 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ServerlessMarketplace.Platform.Application.Customers;
-using ServerlessMarketplace.Platform.Application.Customers.Commands;
-using ServerlessMarketplace.Resources.Extensions;
-using System.Security.Claims;
+using ServerlessMarketplace.Platform.Application.Users;
+using ServerlessMarketplace.Platform.Application.Users.Filters;
 
 namespace ServerlessMarketplace.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class UserController(ICustomerAppService customerAppService) : ControllerBase()
+    public class UserController(IUserAppService userService) : ControllerBase()
     {
-        private readonly ICustomerAppService customerAppService =
-            customerAppService ?? throw new ArgumentNullException(nameof(customerAppService));
+        private readonly IUserAppService userAppService =
+            userService ?? throw new ArgumentNullException(nameof(userService));
 
-        [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CreateOrUpdateCustomerCommand command, CancellationToken ct = default)
+        [HttpGet]
+        public async Task<IActionResult> GetBasicInformation([FromQuery] GetUserBasicInformationFilter? filter, CancellationToken ct = default)
         {
-            command.EnsureIsValid();
+            ArgumentNullException.ThrowIfNull(filter);
 
-            ClaimsPrincipal current = this.User;
+            var basicInformation = await userAppService.GetBasicInformation(filter, ct);
 
-            var customerId = await customerAppService.CreateOrUpdate(command, ct);
-
-            return Ok(customerId);
+            return Ok(basicInformation);
         }
     }
 }
