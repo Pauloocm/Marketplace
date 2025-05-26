@@ -7,37 +7,18 @@ namespace ServerlessMarketplace.CustomBinder
 {
     public class UserIdModelBinder : IModelBinder
     {
-        private static readonly JsonSerializerOptions JsonOptions = new()
-        {
-            PropertyNameCaseInsensitive = true
-        };
-
-        public async Task BindModelAsync(ModelBindingContext bindingContext)
+        public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             ArgumentNullException.ThrowIfNull(bindingContext);
 
             if (!ValidateModelType(bindingContext))
             {
                 bindingContext.Result = ModelBindingResult.Failed();
-                return;
+                return Task.FromResult(bindingContext.Result);
             }
-
-            //var requestBody = await reader.ReadToEndAsync();
-
-            //if (string.IsNullOrEmpty(requestBody))
-            //{
-            //    bindingContext.Result = ModelBindingResult.Failed();
-            //    return;
-            //}
 
             try
             {
-                //if (JsonSerializer.Deserialize(requestBody, bindingContext.ModelType, JsonOptions) is not BaseFilter model)
-                //{
-                //    bindingContext.Result = ModelBindingResult.Failed();
-                //    return;
-                //}
-
                 var model = (BaseFilter)Activator.CreateInstance(bindingContext.ModelType)!;
 
                 if (Guid.TryParse(bindingContext.HttpContext.User.Claims
@@ -47,11 +28,13 @@ namespace ServerlessMarketplace.CustomBinder
                 }
 
                 bindingContext.Result = ModelBindingResult.Success(model);
+                return Task.FromResult(bindingContext.Result);
             }
             catch (JsonException)
             {
                 bindingContext.ModelState.AddModelError(string.Empty, "Invalid JSON format in request body.");
                 bindingContext.Result = ModelBindingResult.Failed();
+                return Task.FromResult(bindingContext.Result);
             }
         }
 
