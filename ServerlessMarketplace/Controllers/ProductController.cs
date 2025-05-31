@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServerlessMarketplace.Platform.Application.Products;
+using System.Security.Claims;
 
 namespace ServerlessMarketplace.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class ProductController(IProductAppService appService) : ControllerBase()
     {
@@ -26,15 +29,19 @@ namespace ServerlessMarketplace.Controllers
 
             var filter = new GetProductFilter() { Id = productId };
 
+            ClaimsPrincipal current = this.User;
+
             var product = await productAppService.Get(filter.SetId(productId), cancellationToken);
 
             return Ok(product);
         }
 
-        [HttpGet("/Search")]
+        [HttpGet("Search")]
         public async Task<IActionResult> Search([FromQuery] SearchProductsFilter filter, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(filter);
+
+            var user = this.User;
 
             var products = await productAppService.Search(filter, cancellationToken);
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
@@ -11,9 +12,11 @@ using ServerlessMarketplace.Platform.Infrastructure.Database.Context;
 namespace ServerlessMarketplace.Migrations.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250520101154_RemovingUserNameRequired")]
+    partial class RemovingUserNameRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,11 +235,16 @@ namespace ServerlessMarketplace.Migrations.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Birthday")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -246,16 +254,10 @@ namespace ServerlessMarketplace.Migrations.Migrations
                         .HasMaxLength(210)
                         .HasColumnType("character varying(210)");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId")
-                        .IsUnique();
 
                     b.ToTable("Customers");
                 });
@@ -380,10 +382,12 @@ namespace ServerlessMarketplace.Migrations.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
@@ -507,15 +511,6 @@ namespace ServerlessMarketplace.Migrations.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("ServerlessMarketplace.Domain.Customers.Customer", b =>
-                {
-                    b.HasOne("ServerlessMarketplace.Domain.User.User", "Owner")
-                        .WithOne()
-                        .HasForeignKey("ServerlessMarketplace.Domain.Customers.Customer", "OwnerId");
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("ServerlessMarketplace.Domain.Orders.Order", b =>
